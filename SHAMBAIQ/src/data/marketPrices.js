@@ -1,0 +1,38 @@
+export const marketPrices = [
+  {
+    id: 'market-1',
+    crop: 'Sorghum',
+    market: 'Wote',
+    unit: '90 kg bag',
+    price: 'KES 4,800',
+    change: '+6%',
+    trend: 'up',
+  },
+  {
+    id: 'market-2',
+    crop: 'Cowpeas',
+    market: 'Machakos',
+    unit: '90 kg bag',
+    price: 'KES 9,300',
+    change: '+3%',
+    trend: 'up',
+  },
+  {
+    id: 'market-3',
+    crop: 'Pigeon peas',
+    market: 'Kitui',
+    unit: '50 kg bag',
+    price: 'KES 5,200',
+    change: '-1%',
+    trend: 'down',
+  },
+  {
+    id: 'market-4',
+    crop: 'Green grams',
+    market: 'Kibwezi',
+    unit: '90 kg bag',
+    price: 'KES 10,100',
+    change: '0%',
+    trend: 'steady',
+  },
+]

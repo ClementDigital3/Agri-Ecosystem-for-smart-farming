@@ -1,0 +1,15 @@
+{
+  "short_name": "ShambaIQ",
+  "name": "ShambaIQ Agronomic Intelligence",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2ecc71",
+  "background_color": "#ffffff"
+}

@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
+
+:root {
+  font-family: 'Outfit', 'Inter', 'Trebuchet MS', sans-serif;
+  color: #061a0f;
+  background: #f0f7f0;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
+  --surface: #ffffff;
+  --surface-soft: #e2f2e5;
+  --surface-tint: #dbf0df;
+  --text: #05170d;
+  --muted: #2f4033;
+  --line: rgba(10, 110, 48, 0.28);
+  --shadow: 0 1.5rem 3.5rem rgba(4, 42, 20, 0.18);
+  --shadow-strong: 0 1.8rem 4rem rgba(4, 42, 20, 0.26);
+  --green: #00aa38;
+  --green-deep: #004d1c;
+  --green-fresh: #0ad339;
+  --green-tint: #b8efc6;
+  --green-tint-strong: #96e8ad;
+  --weather: #ffaa00;
+  --alert: #ff6600;
+  --danger: #ff1100;
+  --info: #0088ff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif !important;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 20rem;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(10, 211, 57, 0.22), transparent 26rem),
+    radial-gradient(circle at 8% 18%, rgba(255, 170, 0, 0.2), transparent 18rem),
+    linear-gradient(180deg, #f2faf2 0%, #e6f6e8 50%, #d8f0db 100%);
+  color: var(--text);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+#root {
+  min-height: 100vh;
+}
