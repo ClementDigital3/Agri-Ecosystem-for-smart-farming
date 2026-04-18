@@ -1,4 +1,5 @@
 import React from 'react';
+import ActivityFeed from './ActivityFeed';
 
 const Sidebar = () => {
   return (
@@ -12,7 +13,7 @@ const Sidebar = () => {
       gap: '1.5rem',
       overflowY: 'auto'
     }}>
-      <h3 style={{ fontSize: '0.9rem', color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Quick Insights</h3>
+      <h3 style={{ fontSize: '0.9rem', color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Regional Pulse</h3>
 
       <div className="insight-card card" style={{ padding: '1rem', background: 'var(--primary-soft)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
@@ -56,35 +57,9 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className="insight-card card" style={{ padding: '1rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: '600' }}>Market Update</span>
-          <span>🌽</span>
-        </div>
-        <div style={{ fontSize: '0.75rem' }}>Maize price:</div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.25rem' }}>
-          <span style={{ fontWeight: '700' }}>KSh 3200</span>
-          <span style={{ color: 'var(--secondary)', fontSize: '0.75rem' }}>▲ 2.4%</span>
-        </div>
-      </div>
-
-      <div className="insight-card card" style={{ padding: '1rem' }}>
-        <h4 style={{ fontSize: '0.8rem', marginBottom: '0.5rem' }}>Weather Outlook</h4>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Wed</div>
-            <div style={{ fontSize: '0.8rem', fontWeight: '600' }}>34°C</div>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Thu</div>
-            <div style={{ fontSize: '0.8rem', fontWeight: '600' }}>36°C</div>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Fri</div>
-            <div style={{ fontSize: '0.8rem', fontWeight: '600' }}>37°C</div>
-          </div>
-        </div>
-      </div>
+      {/* Live Activity Feed */}
+      <ActivityFeed />
+      
     </aside>
   );
 };
