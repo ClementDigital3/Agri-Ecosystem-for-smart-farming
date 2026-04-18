@@ -59,12 +59,22 @@ function FarmIcon() {
   )
 }
 
+function FinanceIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 16.5V7.5M9.5 14.5l2.5 2 2.5-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  )
+}
+
 const icons = {
   home: HomeIcon,
   weather: WeatherIcon,
   crop: CropIcon,
   alerts: AlertsIcon,
   market: MarketIcon,
+  finance: FinanceIcon,
   farm: FarmIcon,
 }
 

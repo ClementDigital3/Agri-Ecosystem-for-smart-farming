@@ -55,6 +55,14 @@ export const homeQuickActions = [
     badge: 'Farm view',
     tone: 'farm',
   },
+  {
+    id: 'profit-calc',
+    title: 'Profitability',
+    route: '/profitability',
+    icon: 'finance',
+    badge: 'Forecast',
+    tone: 'finance',
+  },
 ]
 
 export const myFarmOverview = {

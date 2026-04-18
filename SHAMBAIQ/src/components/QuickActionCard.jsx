@@ -39,6 +39,14 @@ function FarmIcon() {
   )
 }
 
+function FinanceIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 4.5a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15zM12 6.5v11M9.5 9.5h4a1.5 1.5 0 1 1 0 3h-3a1.5 1.5 0 1 0 0 3h4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function ArrowIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -53,6 +61,7 @@ const icons = {
   alerts: AlertIcon,
   market: MarketIcon,
   farm: FarmIcon,
+  finance: FinanceIcon,
 }
 
 function QuickActionCard({ title, detail, badge, icon, route, tone }) {

@@ -12,22 +12,26 @@
   -moz-osx-font-smoothing: grayscale;
   color-scheme: light;
   --surface: #ffffff;
-  --surface-soft: #e2f2e5;
+  --surface-soft: #e8f4eb;
   --surface-tint: #dbf0df;
   --text: #05170d;
-  --muted: #2f4033;
-  --line: rgba(10, 110, 48, 0.28);
-  --shadow: 0 1.5rem 3.5rem rgba(4, 42, 20, 0.18);
-  --shadow-strong: 0 1.8rem 4rem rgba(4, 42, 20, 0.26);
+  --muted: #3a5240;
+  --line: rgba(10, 110, 48, 0.16);
+  --shadow: 0 1.5rem 3.5rem rgba(4, 42, 20, 0.12);
+  --shadow-strong: 0 1.8rem 4rem rgba(4, 42, 20, 0.2);
+  --shadow-glow: 0 0.8rem 2.5rem rgba(10, 211, 57, 0.08);
   --green: #00aa38;
   --green-deep: #004d1c;
   --green-fresh: #0ad339;
-  --green-tint: #b8efc6;
+  --green-tint: #c5f2d1;
   --green-tint-strong: #96e8ad;
   --weather: #ffaa00;
   --alert: #ff6600;
   --danger: #ff1100;
   --info: #0088ff;
+  --glow-green: rgba(10, 211, 57, 0.06);
+  --glow-gold: rgba(255, 193, 7, 0.06);
+  --glow-blue: rgba(0, 136, 255, 0.05);
 }
 
 *,
@@ -46,10 +50,13 @@ body {
   min-width: 20rem;
   min-height: 100vh;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at top right, rgba(10, 211, 57, 0.22), transparent 26rem),
-    radial-gradient(circle at 8% 18%, rgba(255, 170, 0, 0.2), transparent 18rem),
-    linear-gradient(180deg, #f2faf2 0%, #e6f6e8 50%, #d8f0db 100%);
+  background-color: #e8f3ea;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 85% 5%, rgba(10, 211, 57, 0.14), transparent),
+    radial-gradient(ellipse 50% 40% at 10% 15%, rgba(255, 193, 7, 0.1), transparent),
+    radial-gradient(ellipse 40% 30% at 50% 80%, rgba(0, 136, 255, 0.05), transparent),
+    linear-gradient(175deg, #f4fbf4 0%, #eaf5ec 30%, #e2f1e5 60%, #daeede 100%);
+  background-attachment: fixed;
   color: var(--text);
 }
 

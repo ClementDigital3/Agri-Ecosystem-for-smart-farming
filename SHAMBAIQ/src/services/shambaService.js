@@ -1,5 +1,5 @@
 import { alerts } from '../data/alerts'
-import { cropAdvisories } from '../data/crops'
+import { cropAdvisories, agriculturalProtocols } from '../data/crops'
 import {
   farmerProfile,
   homeBrand,
@@ -56,6 +56,9 @@ export async function getWeatherData() {
 
 export function getCropAdvisories() {
   return cropAdvisories
+}
+export function getAgriculturalProtocols() {
+  return agriculturalProtocols
 }
 
 export function getAlerts() {

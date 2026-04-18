@@ -1,3 +1,6 @@
+import React from 'react';
+import AppSwitcher from './AppSwitcher';
+
 function NotificationIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -34,14 +37,19 @@ function DashboardTopBar({ title, subtitle, status, notificationCount }) {
         </div>
       </div>
 
-      <button
-        type="button"
-        className="dashboard-notification"
-        aria-label={`${notificationCount} notifications`}
-      >
-        <NotificationIcon />
-        <span className="dashboard-notification__badge">{notificationCount}</span>
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <button
+          type="button"
+          className="dashboard-notification"
+          aria-label={`${notificationCount} notifications`}
+        >
+          <NotificationIcon />
+          <span className="dashboard-notification__badge">{notificationCount}</span>
+        </button>
+        
+        {/* Global Ecosystem Switcher */}
+        <AppSwitcher currentApp="shambaiq" />
+      </div>
     </header>
   )
 }

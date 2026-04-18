@@ -9,8 +9,8 @@ function WeatherForecastCard({ day, condition, high, low, rainChance, wind, outl
       <h3 className="weather-forecast-card__condition">{condition}</h3>
 
       <div className="weather-forecast-card__temps">
-        <strong>{high} C</strong>
-        <span>Low {low} C</span>
+        <strong>{high}&deg;C</strong>
+        <span>Low {low}&deg;C</span>
       </div>
 
       <p className="weather-forecast-card__wind">Wind {wind}</p>
