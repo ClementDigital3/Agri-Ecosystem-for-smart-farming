@@ -1,116 +1,67 @@
 import React from 'react';
-import GlobalSyncSignal from './GlobalSyncSignal';
-import AppSwitcher from './AppSwitcher';
 
 const Header = ({ currentPage, setPage }) => {
   return (
-    <header className="asal-header" style={{
-      height: 'var(--header-height)',
-      background: 'var(--surface)',
-      borderBottom: '1px solid var(--border)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 2rem',
-      zIndex: 100,
-      boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+    <header className="asal-header" style={{ 
+      height: '80px', 
+      background: 'white', 
+      borderBottom: '2px solid rgba(15, 23, 42, 0.08)', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'space-between', 
+      padding: '0 2.5rem',
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000
     }}>
-      <div className="asal-header__brand" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontSize: '1.2rem',
-          fontWeight: 'bold',
-          cursor: 'pointer'
-        }} onClick={() => setPage('dashboard')}>
-          A
-        </div>
-        <div>
-           <h1 style={{ fontSize: '1.25rem', color: 'var(--primary)', fontWeight: '700', lineHeight: 1.1 }}>
-            Agri-Intelligence Platform
-          </h1>
-          <div style={{ fontWeight: '400', color: 'var(--text-muted)', fontSize: '0.8rem' }}>for ASAL Regions</div>
-        </div>
+      
+      {/* Platform Branding */}
+      <div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} onClick={() => setPage('dashboard')}>
+        <h1 style={{ fontSize: '1.4rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em' }}>
+          Agri-Intelligence <span style={{ color: '#3b82f6' }}>Platform</span>
+        </h1>
+        <span style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '800', letterSpacing: '0.1em' }}>FOR ASAL REGIONS</span>
       </div>
 
-      <nav className="asal-header__nav" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-        <button 
-          onClick={() => setPage('dashboard')}
-          style={{ 
-            background: 'none', 
-            border: 'none', 
-            color: currentPage === 'dashboard' ? 'var(--primary)' : 'var(--text-muted)', 
-            fontWeight: currentPage === 'dashboard' ? '700' : '500', 
-            cursor: 'pointer',
-            fontSize: '0.95rem' 
-          }}
-        >
-          Dashboard
-        </button>
-        <button 
-          onClick={() => setPage('advisory')}
-          style={{ 
-            background: 'none', 
-            border: 'none', 
-            color: currentPage === 'advisory' ? 'var(--primary)' : 'var(--text-muted)', 
-            fontWeight: currentPage === 'advisory' ? '700' : '500', 
-            cursor: 'pointer',
-            fontSize: '0.95rem' 
-          }}
-        >
-          Advisory
-        </button>
-        <button 
-           onClick={() => setPage('market')}
-           style={{ 
-            background: 'none', 
-            border: 'none', 
-            color: currentPage === 'market' ? 'var(--primary)' : 'var(--text-muted)', 
-            fontWeight: currentPage === 'market' ? '700' : '500', 
-            cursor: 'pointer',
-            fontSize: '0.95rem' 
-          }}
-        >
-          Markets
-        </button>
-        <button 
-           onClick={() => setPage('weather')}
-           style={{ 
-            background: 'none', 
-            border: 'none', 
-            color: currentPage === 'weather' ? 'var(--primary)' : 'var(--text-muted)', 
-            fontWeight: currentPage === 'weather' ? '700' : '500', 
-            cursor: 'pointer',
-            fontSize: '0.95rem' 
-          }}
-        >
-          Weather AI
-        </button>
-        
-        {/* Global Sync Hub */}
-        <div style={{ marginLeft: '1rem' }}>
-           <GlobalSyncSignal />
-        </div>
+      {/* RE-WIRED NAVIGATION BUTTONS */}
+      <nav style={{ display: 'flex', gap: '2rem' }}>
+        {[
+          { id: 'dashboard', label: 'Dashboard' },
+          { id: 'advisory', label: 'Advisory' },
+          { id: 'market', label: 'Markets' },
+          { id: 'weather', label: 'Weather AI' },
+          { id: 'support', label: 'Support Hub' }
+        ].map(item => (
+          <button 
+            key={item.id}
+            onClick={() => setPage(item.id)}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              fontSize: '0.85rem', 
+              fontWeight: '800', 
+              cursor: 'pointer',
+              color: currentPage === item.id ? '#3b82f6' : '#64748b',
+              padding: '0.5rem 0',
+              borderBottom: currentPage === item.id ? '2px solid #3b82f6' : '2px solid transparent',
+              transition: 'all 0.3s ease',
+              fontFamily: "'Outfit', sans-serif"
+            }}
+          >
+            {item.label}
+          </button>
+        ))}
       </nav>
 
-      <div className="asal-header__user" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: '#f1f5f9', padding: '0.5rem 1rem', borderRadius: '30px' }}>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: '700' }}>John Kamau</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>County Officer</div>
-          </div>
-          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>👤</div>
-        </div>
-        
-        {/* The Ecosystem Switcher */}
-        <AppSwitcher currentApp="asal" />
+      {/* User Profile / Status */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+         <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: '800' }}>John Kamau</div>
+            <div style={{ fontSize: '0.65rem', color: '#64748b' }}>County Officer</div>
+         </div>
+         <div style={{ width: '40px', height: '40px', background: '#e2e8f0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900' }}>JK</div>
       </div>
+
     </header>
   );
 };

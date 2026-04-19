@@ -1,202 +1,375 @@
+/* ==========================================================================
+   AGRI-GATEWAY: CREATIVE & PRISTINE UI
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
 :root {
-  --bg: #030712;
-  --surface: rgba(17, 24, 39, 0.85);
-  --primary: #60a5fa;
-  --secondary: #f472b6;
-  --accent: #34d399;
-  --text: #f9fafb;
-  --text-muted: #6b7280;
-  --border: rgba(55, 65, 81, 0.6);
-  --font-main: 'Outfit', sans-serif;
-  --font-data: 'Space Mono', monospace;
+  --primary: #10b981;    /* Emerald for Farmer */
+  --secondary: #3b82f6;  /* Blue for Official */
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --bg-glass: rgba(255, 255, 255, 0.60);
+  --border-glass: rgba(255, 255, 255, 0.5);
+  --font-sans: 'Outfit', sans-serif;
+  --font-mono: 'Space Mono', monospace;
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-main);
-  background-color: var(--bg);
-  color: var(--text);
-  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  background-color: #000;
+  overflow: hidden; /* Prevent ugly scrollbars */
   height: 100vh;
   width: 100vw;
 }
 
-.precision-portal {
-  position: relative;
-  height: 100vh;
+/* Background Layer */
+.bg-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
+  height: 100vh;
+  background-image: url('/asal_daylight_horizon_fantastic_1776550138585.png');
+  background-size: cover;
+  background-position: center top; 
+  z-index: 1;
+  transition: transform 0.1s ease-out;
+  transform-origin: center center;
+}
+
+/* Enhancing the lightness for glassmorphism */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%, transparent 10%, rgba(255,255,255,0.4) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Main Layout */
+.app-container {
+  position: relative;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 3rem;
-  background-image: url('/asal_orbital_command_map_1776545972915.png');
-  background-size: cover;
-  background-position: center;
 }
 
-.portal-darken {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(3, 7, 18, 0.2) 0%, var(--bg) 95%);
-  z-index: 1;
-}
-
-.clinical-grid {
-  position: absolute;
-  inset: 0;
-  background: 
-    linear-gradient(rgba(96, 165, 250, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(96, 165, 250, 0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 2;
-  mask-image: radial-gradient(circle at center, black, transparent 90%);
-}
-
-/* Engineering HUD HUD Header */
-.eng-header {
+header {
+  flex-shrink: 0;
+  padding: 2.5rem 4rem 1rem 4rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  z-index: 10;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 1.5rem;
-  margin-bottom: 3rem;
-  font-family: var(--font-data);
+  align-items: flex-end;
 }
 
-.eng-title-group {
+footer {
+  flex-shrink: 0;
+  padding: 1rem 4rem 2.5rem 4rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.eng-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 2500px; /* Essential for 3D tilt */
+}
+
+/* Typography styles */
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
-.eng-meta {
-  font-size: 0.65rem;
-  color: var(--primary);
-  letter-spacing: 0.3em;
+.title-main {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-top: 0.5rem;
+  color: var(--text-main);
 }
 
-.eng-status-block {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  font-size: 0.65rem;
+.subtitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
 }
 
-.eng-status-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+/* The Glass Panel Concept */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(35px) saturate(1.8);
+  -webkit-backdrop-filter: blur(35px) saturate(1.8);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.7);
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
 }
 
-.label { color: var(--text-muted); text-transform: uppercase; }
-.value { font-weight: 700; color: var(--text); }
-
-/* Precision Cards */
-.eng-card-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  z-index: 10;
-  flex: 1;
-  align-items: center;
-}
-
-.eng-card {
-  background: var(--surface);
-  backdrop-filter: blur(40px);
-  border: 1px solid var(--border);
-  padding: 2.5rem;
-  border-radius: 4px; /* Clinical square edges */
-  position: relative;
+/* Role Cards specifically */
+.role-card {
   cursor: pointer;
-  transition: all 0.4s ease;
+  padding: 3.5rem;
+  width: 420px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.eng-card-corner {
+.role-card::before {
+  content: '';
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 2px solid var(--primary);
+  top: 0; left: 0; right: 0; height: 4px;
+  background: transparent;
+  transition: background 0.3s ease;
 }
 
-.eng-card:hover {
-  background: rgba(17, 24, 39, 0.95);
-  border-color: var(--primary);
-  box-shadow: 0 0 40px rgba(96, 165, 250, 0.1);
+.role-card.farmer:hover {
+  box-shadow: 0 40px 80px rgba(16, 185, 129, 0.25), inset 0 0 0 1px rgba(255,255,255,0.8);
+}
+.role-card.farmer:hover::before {
+  background: var(--primary);
 }
 
-.eng-card-id {
-  font-family: var(--font-data);
-  font-size: 0.6rem;
-  color: var(--primary);
-  margin-bottom: 1rem;
+.role-card.official:hover {
+  box-shadow: 0 40px 80px rgba(59, 130, 246, 0.25), inset 0 0 0 1px rgba(255,255,255,0.8);
+}
+.role-card.official:hover::before {
+  background: var(--secondary);
+}
+
+.icon-wrapper {
+  font-size: 6rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+}
+
+.role-card.farmer .icon-wrapper {
+  filter: drop-shadow(0 15px 25px rgba(16, 185, 129, 0.3));
+}
+
+.role-card.official .icon-wrapper {
+  filter: drop-shadow(0 15px 25px rgba(59, 130, 246, 0.3));
 }
 
 .card-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
 }
 
-.card-spec-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px dashed var(--border);
-  font-family: var(--font-data);
+.farmer .card-title { color: var(--primary); }
+.official .card-title { color: var(--secondary); }
+
+.card-action {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255,255,255,0.6);
+  border-radius: 8px;
+  color: var(--text-main);
 }
 
-.spec-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+/* Form Styles */
+.form-container {
+  width: 900px;
+  padding: 2rem 3rem; /* Reduced vertical padding */
+  max-height: 85vh; /* Prevents being cut off */
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+}
+.form-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
 }
 
-.spec-label { font-size: 0.55rem; color: var(--text-muted); }
-.spec-value { font-size: 0.7rem; color: var(--accent); }
-
-.eng-footer {
-  margin-top: auto;
-  z-index: 10;
+.form-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-data);
-  font-size: 0.6rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
-.log-stream {
-  color: var(--primary);
+.back-btn {
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.6);
+  color: var(--text-main);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.back-btn:hover {
+  background: rgba(255,255,255,0.8);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem; /* Reduced gap */
+}
+
+.input-wrapper {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+.input-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
 }
 
-.cursor-blink {
-  display: inline-block;
-  width: 6px;
-  height: 12px;
+.styled-input {
+  width: 100%;
+  padding: 0.8rem; /* Reduced input padding */
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem; /* Reduced font size slightly */
+  font-weight: 500;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+}
+.styled-input:focus {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+}
+
+/* Specific focus bounds */
+.env-farmer .styled-input:focus { border-color: var(--primary); }
+.env-official .styled-input:focus { border-color: var(--secondary); }
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem; /* Reduced padding */
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+}
+
+.env-farmer .submit-btn {
   background: var(--primary);
-  animation: blink 1s infinite;
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
 }
+.env-farmer .submit-btn:hover {
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+}
+
+.env-official .submit-btn {
+  background: var(--secondary);
+  box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+}
+.env-official .submit-btn:hover {
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+}
+
+.toggle-mode-btn {
+  grid-column: 1 / -1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.toggle-mode-btn:hover {
+  opacity: 1;
+}
+
+.animate-in {
+  animation: slideFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ==========================================================================
+   GLOBAL 3D ANIMATION ENGINE (CSS-Variable Powered)
+   ========================================================================== */
+
+.parallax-bg {
+  transform: translate(calc(var(--mouse-x, 0) * -30px), calc(var(--mouse-y, 0) * -30px)) scale(1.05);
+  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dynamic-tilt-header {
+  transform: perspective(2500px) rotateY(calc(var(--mouse-x, 0) * 5deg)) rotateX(calc(var(--mouse-y, 0) * -5deg));
+  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dynamic-3d-scene {
+  transform: perspective(3000px) rotateY(calc(var(--mouse-x, 0) * 15deg)) rotateX(calc(var(--mouse-y, 0) * -15deg));
+  transform-style: preserve-3d;
+  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Continuous breathing idle animation */
+.floating-idle {
+  animation: floatBreathing 6s ease-in-out infinite;
+}
+
+@keyframes floatBreathing {
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(-15px) translateZ(40px); }
+}
+

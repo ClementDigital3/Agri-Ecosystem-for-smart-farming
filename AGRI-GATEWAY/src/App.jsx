@@ -1,145 +1,263 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import './index.css';
 
-function App() {
-  const [coords, setCoords] = useState({ lat: -1.2921, lng: 36.8219 });
-  const [load, setLoad] = useState(14.2);
+// -----------------------------------------------------------------------------
+// REUSABLE UI COMPONENTS
+// -----------------------------------------------------------------------------
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCoords(prev => ({
-        lat: prev.lat + (Math.random() - 0.5) * 0.0001,
-        lng: prev.lng + (Math.random() - 0.5) * 0.0001
-      }));
-      setLoad(prev => Math.min(100, Math.max(0, prev + (Math.random() - 0.5))));
-    }, 200);
-    return () => clearInterval(timer);
-  }, []);
+const InputField = ({ label, type = "text", placeholder, colSpan = 1, required = true, name, value, onChange }) => (
+  <div className="input-wrapper" style={{ gridColumn: `span ${colSpan}` }}>
+    <label className="input-label">{label}</label>
+    {type === "select" ? (
+      <select className="styled-input" name={name} value={value} onChange={onChange} required={required}>
+        {placeholder.map((opt, i) => <option key={i} value={opt.val}>{opt.label}</option>)}
+      </select>
+    ) : (
+      <input className="styled-input" name={name} value={value} onChange={onChange} type={type} placeholder={placeholder} required={required} />
+    )}
+  </div>
+);
 
-  const enterApp = (url) => {
-    window.location.href = url;
+// -----------------------------------------------------------------------------
+// AUTH TERMINAL COMPONENT
+// -----------------------------------------------------------------------------
+
+const AuthTerminal = ({ role, mode, onSucceed, onToggleMode, onBack }) => {
+  const isFarmer = role === "farmer";
+  const themeClass = isFarmer ? "env-farmer" : "env-official";
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    pass: '',
+    id: '',
+    phone: '',
+    acres: '',
+    water: 'rain',
+    sector: 'crops',
+    ward: '',
+    org: 'moa',
+    level: 'national',
+    designation: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSucceed(role, formData);
   };
 
   return (
-    <div className="precision-portal">
-      <div className="portal-darken"></div>
-      <div className="clinical-grid"></div>
-      
-      {/* HUD Header */}
-      <header className="eng-header">
-        <div className="eng-title-group">
-          <div className="eng-meta">SYSTEM_ROOT // ECO_V_4.2</div>
-          <h1 className="eng-title">AGRI-ECOSYSTEM MASTER COMMAND</h1>
-          <div style={{ color: '#60a5fa', fontSize: '0.65rem', marginTop: '0.25rem' }}>
-            REGIONAL ASAL COORDINATION HUB <span className="cursor-blink"></span>
+    <div className={`glass-panel form-container animate-in ${themeClass} floating-idle dynamic-tilt`}>
+      <div className="form-header">
+        <button type="button" onClick={onBack} className="back-btn mono-tag">← ABORT_ACCESS</button>
+        <div style={{ textAlign: 'right' }}>
+          <div className="mono-tag" style={{ color: isFarmer ? 'var(--primary)' : 'var(--secondary)' }}>
+            TARGET_NODE: {role.toUpperCase()}
           </div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '900', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
+            {mode === 'login' ? 'SECURE_AUTHENTICATION' : 'IDENTITY_REGISTRY'}
+          </h2>
         </div>
-
-        <div className="eng-status-block">
-          <div className="eng-status-item">
-            <span className="label">Encryption</span>
-            <span className="value" style={{ color: '#34d399' }}>AES-256_ACTIVE</span>
-          </div>
-          <div className="eng-status-item">
-            <span className="label">Sync_Delay</span>
-            <span className="value">{(Math.random() * 40).toFixed(2)}ms</span>
-          </div>
-          <div className="eng-status-item">
-            <span className="label">LAT_COORDS</span>
-            <span className="value">{coords.lat.toFixed(6)}</span>
-          </div>
-          <div className="eng-status-item">
-            <span className="label">LNG_COORDS</span>
-            <span className="value">{coords.lng.toFixed(6)}</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Clinical Cards */}
-      <div className="eng-card-container">
-        
-        {/* Node 01: ShambaIQ */}
-        <div className="eng-card" onClick={() => enterApp('http://localhost:5173')}>
-          <div className="eng-card-corner" style={{ top: -2, left: -2, borderBottom: 'none', borderRight: 'none' }}></div>
-          <div className="eng-card-id">NODE_01 // TACTICAL_INTERFACE</div>
-          <h2 className="card-title">SHAMBAIQ</h2>
-          <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5 }}>
-            Synchronized field telemetry, drone flight-pathing, and localized commodity ledger management.
-          </p>
-          
-          <div className="card-spec-grid">
-            <div className="spec-item">
-              <span className="spec-label">ACTIVE_SENSORS</span>
-              <span className="spec-value">1,248 Units</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">UAV_TRAFFIC</span>
-              <span className="spec-value">82 Flights/hr</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">DATA_THROUGHPUT</span>
-              <span className="spec-value">4.2 GB/s</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">LOCAL_NODES</span>
-              <span className="spec-value">64 Clusters</span>
-            </div>
-          </div>
-          <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.6rem', color: '#60a5fa' }}>SYSTEM_NOMINAL</span>
-            <div style={{ padding: '0.6rem 2rem', background: '#60a5fa', color: '#030712', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.1em' }}>ACCESS_NODE</div>
-          </div>
-        </div>
-
-        {/* Node 02: ASAL Hub */}
-        <div className="eng-card" style={{ borderColor: 'rgba(244, 114, 182, 0.3)' }} onClick={() => enterApp('http://localhost:5174')}>
-          <div className="eng-card-corner" style={{ top: -2, right: -2, borderBottom: 'none', borderLeft: 'none', borderColor: '#f472b6' }}></div>
-          <div className="eng-card-id" style={{ color: '#f472b6' }}>NODE_02 // STRATEGIC_INTEL</div>
-          <h2 className="card-title">ASAL PLATFORM</h2>
-          <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5 }}>
-            Macro-scale analytical modeling, biosecurity foresight simulation, and county-wide crisis coordination.
-          </p>
-          
-          <div className="card-spec-grid">
-            <div className="spec-item">
-              <span className="spec-label">GIS_SAMPLING</span>
-              <span className="spec-value" style={{ color: '#f472b6' }}>30m Res</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">AI_CONFIDENCE</span>
-              <span className="spec-value" style={{ color: '#f472b6' }}>94.8% Prob</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">REGIONAL_SYNC</span>
-              <span className="spec-value" style={{ color: '#f472b6' }}>4 Counties</span>
-            </div>
-            <div className="spec-item">
-              <span className="spec-label">ALERT_LATENCY</span>
-              <span className="spec-value" style={{ color: '#f472b6' }}>0.04 Sec</span>
-            </div>
-          </div>
-          <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.6rem', color: '#f472b6' }}>NETWORK_SECURED</span>
-            <div style={{ padding: '0.6rem 2rem', background: '#f472b6', color: '#030712', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.1em' }}>ENTER_COMMAND</div>
-          </div>
-        </div>
-
       </div>
 
-      {/* Clinical Footer Logs */}
-      <footer className="eng-footer">
-        <div className="log-stream">
-          <span style={{ opacity: 0.5 }}>TERMINAL_LOG:</span>
-          <span>{`[OK] HANDSHAKE: ASAL_PRIMARY_01`}</span>
-          <span>{`[RECV] DATA_PACKET_7741`}</span>
-          <span>{`[WARN] TEMP_ANOMALY: MACHAKOS_SECTOR_A`}</span>
-        </div>
-        <div style={{ display: 'flex', gap: '2rem' }}>
-          <div>MEM_USAGE: {(load / 4).toFixed(1)}%</div>
-          <div>CPU_ALLOC: {load.toFixed(1)}%</div>
-          <div style={{ color: '#34d399' }}>STABLE_V.4.2</div>
-        </div>
-      </footer>
+      <form onSubmit={handleSubmit} className="form-grid">
+        <InputField name="name" value={formData.name} onChange={handleChange} label="FULL_LEGAL_NAME" placeholder="e.g. Samuel K. Ruto" colSpan={2} />
+        <InputField name="pass" value={formData.pass} onChange={handleChange} label="PASSPHRASE" type="password" placeholder="••••••••" />
+
+        {mode === 'register' && (
+          isFarmer ? (
+            <>
+              <InputField name="id" value={formData.id} onChange={handleChange} label="GOVT_ID" placeholder="ID_8_DIGITS" />
+              <InputField name="phone" value={formData.phone} onChange={handleChange} label="TEL_INTEL" type="tel" placeholder="+254..." />
+              <InputField name="acres" value={formData.acres} onChange={handleChange} label="FARM_ACRES" type="number" placeholder="e.g. 5.5" />
+              <InputField 
+                name="water" value={formData.water} onChange={handleChange}
+                label="WATER_NODE" 
+                type="select" 
+                placeholder={[{val:'rain', label:'Rain-fed'}, {val:'borehole', label:'Borehole Grid'}, {val:'irrigation', label:'Precision Irrigation'}]} 
+              />
+              <InputField 
+                name="sector" value={formData.sector} onChange={handleChange}
+                label="ASSET_SECTOR" 
+                type="select" 
+                placeholder={[{val:'crops', label:'Crops Node'}, {val:'livestock', label:'Livestock Unit'}, {val:'mixed', label:'Integrated Matrix'}]} 
+              />
+              <InputField name="ward" value={formData.ward} onChange={handleChange} label="WARD_COORD" placeholder="e.g. Mwala" />
+            </>
+          ) : (
+            <>
+              <InputField 
+                name="org" value={formData.org} onChange={handleChange}
+                label="ORGANIZATION_IDENTITY" 
+                type="select" 
+                colSpan={2}
+                placeholder={[{val:'moa', label:'Ministry of Agriculture'}, {val:'county', label:'County Government'}, {val:'kalro', label:'KALRO Innovation'}, {val:'fao', label:'FAO (United Nations)'}, {val:'wfp', label:'World Food Programme'}]} 
+              />
+              <InputField 
+                name="level" value={formData.level} onChange={handleChange}
+                label="COMMAND_LEVEL" 
+                type="select" 
+                placeholder={[{val:'national', label:'NATIONAL_HUB'}, {val:'county', label:'COUNTY_NODE'}, {val:'ward', label:'WARD_UNIT'}]} 
+              />
+              <InputField name="designation" value={formData.designation} onChange={handleChange} label="OFFICIAL_DESIGNATION" placeholder="e.g. Senior Regional Auditor" colSpan={3} />
+            </>
+          )
+        )}
+
+        <button type="submit" className="submit-btn">
+          {mode === 'login' ? 'GRANT_SECURE_ENTRY' : 'FINALIZE_STRATEGIC_REGISTRY'}
+        </button>
+
+        <button type="button" onClick={onToggleMode} className="toggle-mode-btn mono-tag">
+          {mode === 'login' ? "[ IDENTITY_NOT_FOUND? INITIALIZE_NEW_NODE ]" : "[ IDENTITY_DETECTED? RESUME_SECURE_LOGIN ]"}
+        </button>
+      </form>
     </div>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// MAIN APP COMPONENT
+// -----------------------------------------------------------------------------
+
+function App() {
+  const [role, setRole] = useState(null); 
+  const [userData, setUserData] = useState(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [authView, setAuthView] = useState({ active: false, role: null, mode: 'login' });
+
+  // Extremely performant exact CSS-variable mapping
+  useEffect(() => {
+    const handleGlobalMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX / innerWidth) - 0.5; // range: -0.5 to 0.5
+      const y = (e.clientY / innerHeight) - 0.5;
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--mouse-x', x);
+        document.documentElement.style.setProperty('--mouse-y', y);
+      });
+    };
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+  }, []);
+
+  const finalizeAuth = (finalRole, data) => {
+    setRole(finalRole);
+    setUserData(data);
+    setIsAuthorized(true);
+    setAuthView({ active: false, role: null, mode: 'login' });
+  };
+
+  const enterApp = (baseUrl) => { 
+    // Secure Handshake: Passing encoded identity to the sub-app
+    const payload = btoa(JSON.stringify({ ...userData, role }));
+    window.location.href = `${baseUrl}?user=${payload}`; 
+  };
+
+
+  return (
+    <>
+      <div className="bg-layer parallax-bg" />
+      <div className="overlay" />
+
+      <div className="app-container">
+        <header className="dynamic-tilt-header">
+          <div>
+            <div className="mono-tag" style={{ color: 'var(--secondary)', marginBottom: '0.5rem' }}>SYSTEM_STATUS // ONLINE_NOMINAL</div>
+            <h1 className="title-main">Agri-Ecosystem</h1>
+            <div className="subtitle">
+              {isAuthorized ? `ENCRYPTED_LINK_VERIFIED: ${role.toUpperCase()}` : 'AWAITING_BIOMETRIC_IDENTIFICATION...'}
+            </div>
+          </div>
+        </header>
+
+        <main className="main-content dynamic-3d-scene">
+          {!isAuthorized ? (
+            !authView.active ? (
+              <div style={{ display: 'flex', gap: '4rem' }}>
+                <div 
+                  onClick={() => setAuthView({ active: true, role: 'farmer', mode: 'login' })}
+                  className="glass-panel role-card farmer animate-in floating-idle dynamic-tilt"
+                >
+                  <div className="icon-wrapper">🚜</div>
+                  <h2 className="card-title">FARMER</h2>
+                  <div className="card-action mono-tag">ACCESS_TACTICAL_SHAMBA</div>
+                </div>
+
+                <div 
+                  onClick={() => setAuthView({ active: true, role: 'official', mode: 'login' })}
+                  className="glass-panel role-card official animate-in floating-idle dynamic-tilt"
+                  style={{ animationDelay: '0.1s, 0s' }}
+                >
+                  <div className="icon-wrapper">🏛️</div>
+                  <h2 className="card-title">OFFICIAL</h2>
+                  <div className="card-action mono-tag">ACCESS_STRATEGIC_ASAL</div>
+                </div>
+              </div>
+            ) : (
+              <AuthTerminal 
+                role={authView.role} 
+                mode={authView.mode} 
+                onSucceed={finalizeAuth}
+                onToggleMode={() => setAuthView(prev => ({ ...prev, mode: prev.mode === 'login' ? 'register' : 'login' }))}
+                onBack={() => setAuthView({ active: false, role: null, mode: 'login' })}
+              />
+            )
+          ) : (
+            <div className="animate-in" style={{ display: 'flex', gap: '3rem' }}>
+              {role === 'farmer' ? (
+                <div 
+                  className="glass-panel role-card farmer floating-idle dynamic-tilt" 
+                  style={{ width: '600px' }}
+                  onClick={() => enterApp('http://localhost:5173')}
+                >
+                  <div className="mono-tag" style={{ color: 'var(--primary)', marginBottom: '2rem' }}>WELCOME_BACK // NODE_ACTIVE</div>
+                  <h2 style={{ fontSize: '5rem', fontWeight: '900', letterSpacing: '-0.05em', marginBottom: '3rem' }}>ShambaIQ</h2>
+                  <div className="card-action mono-tag" style={{ background: 'var(--primary)', color: '#fff', padding: '1.25rem 2rem', fontSize: '1.1rem' }}>LAUNCH_COMMAND_CENTER</div>
+                </div>
+              ) : (
+                <>
+                  <div 
+                    className="glass-panel role-card official floating-idle dynamic-tilt" 
+                    onClick={() => enterApp('http://localhost:5173')}
+                  >
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: 'var(--text-muted)' }}>Node_Manager</h2>
+                    <p className="mono-tag" style={{ marginTop: '2rem' }}>REGIONAL_AUDIT_TERMINAL</p>
+                  </div>
+                  <div 
+                    className="glass-panel role-card official floating-idle dynamic-tilt" 
+                    style={{ animationDelay: '0.1s, 0s' }}
+                    onClick={() => enterApp('http://localhost:5174')}
+                  >
+                    <h2 style={{ fontSize: '3rem', color: 'var(--secondary)', fontWeight: '900' }}>ASAL_HUB</h2>
+                    <div className="card-action mono-tag" style={{ marginTop: '2.5rem', background: 'var(--secondary)', color: '#fff', padding: '1rem 2rem' }}>OPEN_STRATEGIC_ASAL</div>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </main>
+
+        <footer>
+          <div className="mono-tag" style={{ color: 'var(--text-muted)' }}>
+            🛰️ LEO_V5_ORBITAL_STATION
+            <span className="pulse-dot"></span>
+          </div>
+          {isAuthorized && (
+            <button 
+              onClick={() => { setIsAuthorized(false); setRole(null); }} 
+              style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}
+              className="mono-tag"
+            >
+               TERMINATE_LINK [-]
+            </button>
+          )}
+        </footer>
+      </div>
+    </>
   );
 }
 

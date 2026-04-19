@@ -1,48 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap');
+/* ==========================================================================
+   AGRI-INTELLIGENCE STRATEGIC HUB: PRISTINE RE-STABILIZATION CSS
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800;900&display=swap');
 
 :root {
-  --primary: #1a4f7a;
-  --primary-soft: #eef5fb;
-  --secondary: #2e7d32;
-  --secondary-soft: #e8f5e9;
-  --accent: #ff9800;
-  --danger: #d32f2f;
-  --text: #1e293b;
-  --text-muted: #64748b;
+  /* High-Contrast Design Tokens */
+  --primary: #3b82f6;
+  --accent: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
   --bg: #f8fafc;
   --surface: #ffffff;
-  --border: #e2e8f0;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-  --radius: 12px;
-  --header-height: 70px;
-  --sidebar-width: 260px;
+  --border: rgba(15, 23, 42, 0.08);
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --font-main: 'Outfit', sans-serif;
+  --font-data: 'Space Mono', monospace;
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
+  font-family: var(--font-main);
+  background-color: var(--bg);
+  background-image: url('/asal_daylight_horizon_fantastic_1776550138585.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+  height: 100vh;
+  overflow: hidden;
 }
 
-h1, h2, h3, h4 {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-}
-
-/* App Shell */
+/* Core Layout: Fixed & Functional */
 .asal-shell {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 .asal-main-container {
@@ -53,45 +53,75 @@ h1, h2, h3, h4 {
 
 .asal-content {
   flex: 1;
-  padding: 1.5rem;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  padding: 2.5rem;
+  background: rgba(248, 250, 252, 0.4);
 }
 
-/* Common Components */
+/* Components: Standardized Surfaces */
 .card {
   background: var(--surface);
-  border-radius: var(--radius);
   border: 1px solid var(--border);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
+  border-radius: 4px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
 }
 
 .card-title {
-  font-size: 1rem;
-  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 800;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
 }
 
-/* Glassmorphism for specific elements */
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+/* Macro HUD Pills: Hardwired Precision */
+.macro-hud {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
 }
 
-/* Animation Utilities */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.hud-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  border-left: 4px solid var(--primary);
 }
 
+.hud-label {
+  font-family: var(--font-data);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.hud-value {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin-top: 0.25rem;
+}
+
+/* Scrollbar: Professional Minimalist */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* Animation: Zero-Lag Fade Only */
 .animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: simpleFade 0.3s ease-out forwards;
+}
+
+@keyframes simpleFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

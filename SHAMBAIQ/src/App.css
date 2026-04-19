@@ -2,9 +2,10 @@
   min-height: 100svh;
   width: 100%;
   margin: 0 auto;
-  padding:
-    calc(5.8rem + env(safe-area-inset-top))
-    clamp(0.9rem, 3vw, 1.6rem)
+  /* INCREASED PADDING TO CLEAR FIXED HEADER */
+  padding: 
+    calc(8.5rem + env(safe-area-inset-top)) 
+    clamp(0.9rem, 3vw, 1.6rem) 
     calc(6rem + env(safe-area-inset-bottom));
   position: relative;
 }
@@ -38,64 +39,64 @@
 }
 
 /* ==========================================================================
-   THEME: DARK FINANCE (MARKET DASHBOARD)
+   THEME: LIGHT FINANCE (MARKET DASHBOARD)
    ========================================================================== */
 
-.theme-dark-finance {
-  --text: #f0f4f1;
-  --muted: #a0b2a5;
-  --line: rgba(255, 255, 255, 0.1);
-  --surface: #0f1a12;
-  --surface-soft: #16241a;
-  background: radial-gradient(circle at 50% -20%, #1b3d26 0%, #0c160f 100%) fixed !important;
-  color: #f0f4f1 !important;
+.theme-light-finance {
+  --text: #0f172a;
+  --muted: #64748b;
+  --line: rgba(15, 23, 42, 0.08);
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  background: radial-gradient(circle at 50% -20%, #ecfdf5 0%, #f8fafc 100%) fixed !important;
+  color: #0f172a !important;
   min-height: 100vh;
-  margin: -1.6rem -1.6rem -6rem; /* Counteract app-shell padding */
+  margin: -1.6rem -1.6rem -6rem; 
   padding: 1.6rem 1.6rem 6rem;
 }
 
-.theme-dark-finance .page-hero {
-  background: linear-gradient(145deg, #162a1d 0%, #0c160f 100%);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.4);
+.theme-light-finance .page-hero {
+  background: linear-gradient(145deg, #ffffff 0%, #f0fdf4 100%);
+  border-color: rgba(15, 23, 42, 0.05);
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.04);
 }
 
-.theme-dark-finance .page-title,
-.theme-dark-finance .page-subtitle {
-  color: #ffffff;
+.theme-light-finance .page-title,
+.theme-light-finance .page-subtitle {
+  color: #0f172a;
 }
 
-.theme-dark-finance .hero-stat {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
+.theme-light-finance .hero-stat {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
 }
 
-.theme-dark-finance .hero-stat strong {
-  color: #0ad339;
+.theme-light-finance .hero-stat strong {
+  color: #10b981;
 }
 
-.theme-dark-finance .commodity-card.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+.theme-light-finance .commodity-card.glass-panel {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.05);
 }
 
-.theme-dark-finance .market-ticker {
-  background: rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.theme-light-finance .market-ticker {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
 }
 
-.theme-dark-finance .market-demand-chart {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+.theme-light-finance .market-demand-chart {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.05);
 }
 
-.theme-dark-finance .chart-metrics strong {
-  color: #0ad339;
+.theme-light-finance .chart-metrics strong {
+  color: #10b981;
 }
 
-.theme-dark-finance .market-section-title h3 {
-  color: #ffffff;
+.theme-light-finance .market-section-title h3 {
+  color: #0f172a;
 }
 
 @keyframes ambientFloat1 {
@@ -4928,7 +4929,8 @@
 @media (min-width: 64rem) {
   .app-shell {
     width: min(calc(100% - 1.5rem), 118rem);
-    padding-top: 1.2rem;
+    /* INCREASED PADDING TO PREVENT DESKTOP HEADER OCCLUSION */
+    padding-top: 9rem;
     padding-bottom: 2.5rem;
   }
 
