@@ -1,0 +1,74 @@
+version: "1"
+
+services:
+  # ---------------------------------------------
+  # 1. SHAMBAIQ BACKEND API (Node.js)
+  # ---------------------------------------------
+  - type: web
+    name: shambaiq-api
+    env: node
+    rootDir: SHAMBAIQ
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    plan: free
+
+  # ---------------------------------------------
+  # 2. SHAMBAIQ TACTICAL DASHBOARD (React Static Site)
+  # ---------------------------------------------
+  - type: web
+    name: shambaiq-app
+    env: static
+    rootDir: SHAMBAIQ
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "dist"
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: shambaiq-api
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # ---------------------------------------------
+  # 3. ASAL INTELLIGENCE HUB (React Static Site)
+  # ---------------------------------------------
+  - type: web
+    name: asal-hub
+    env: static
+    rootDir: "ASAL-agri intelligence"
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "dist"
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
+    # Note: VITE_SHAMBAIQ_URL can be manually patched in Render Dashboard Native after first build
+    # to avoid circular dependency errors in Blueprint configurations if both reference each other.
+
+  # ---------------------------------------------
+  # 4. AGRI-GATEWAY PORTAL (React Static Site)
+  # ---------------------------------------------
+  - type: web
+    name: agri-gateway
+    env: static
+    rootDir: AGRI-GATEWAY
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "dist"
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
+    envVars:
+      - key: VITE_SHAMBAIQ_URL
+        fromService:
+          type: web
+          name: shambaiq-app
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: VITE_ASAL_URL
+        fromService:
+          type: web
+          name: asal-hub
+          envVarKey: RENDER_EXTERNAL_URL
