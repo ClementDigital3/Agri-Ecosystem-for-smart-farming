@@ -46,7 +46,22 @@ const AuthTerminal = ({ role, mode, onSucceed, onToggleMode, onBack }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSucceed(role, formData);
+    
+    // Prototype Persistence: Store credentials in browser's local storage
+    let storedUsers = JSON.parse(localStorage.getItem('agri_users') || '[]');
+    
+    if (mode === 'register') {
+      storedUsers.push({ ...formData, role });
+      localStorage.setItem('agri_users', JSON.stringify(storedUsers));
+      onSucceed(role, formData);
+    } else {
+      const foundUser = storedUsers.find(u => u.name === formData.name && u.pass === formData.pass && u.role === role);
+      if (foundUser) {
+        onSucceed(role, foundUser);
+      } else {
+        alert("ACCESS DENIED: Identity not found in local storage. Please switch to REGISTER mode first.");
+      }
+    }
   };
 
   return (
