@@ -31,6 +31,11 @@ services:
           type: web
           name: shambaiq-api
           envVarKey: RENDER_EXTERNAL_URL
+      - key: VITE_GATEWAY_URL
+        fromService:
+          type: web
+          name: agri-gateway
+          envVarKey: RENDER_EXTERNAL_URL
 
   # ---------------------------------------------
   # 3. ASAL INTELLIGENCE HUB (React Static Site)
@@ -47,6 +52,12 @@ services:
         destination: "/index.html"
     # Note: VITE_SHAMBAIQ_URL can be manually patched in Render Dashboard Native after first build
     # to avoid circular dependency errors in Blueprint configurations if both reference each other.
+    envVars:
+      - key: VITE_GATEWAY_URL
+        fromService:
+          type: web
+          name: agri-gateway
+          envVarKey: RENDER_EXTERNAL_URL
 
   # ---------------------------------------------
   # 4. AGRI-GATEWAY PORTAL (React Static Site)

@@ -5,6 +5,14 @@ const AppSwitcher = ({ currentApp }) => {
 
   const apps = [
     { 
+      id: 'gateway', 
+      name: 'Agri-Gateway', 
+      role: 'Master Entrance', 
+      icon: '🔐', 
+      url: import.meta.env.VITE_GATEWAY_URL || 'http://localhost:5000',
+      active: false
+    },
+    { 
       id: 'asal', 
       name: 'ASAL Platform', 
       role: 'Strategic Intelligence', 
