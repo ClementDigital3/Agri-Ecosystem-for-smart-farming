@@ -24,34 +24,18 @@ function App() {
   };
 
   return (
-    <div className="asal-shell" style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '100vh', 
-      background: '#f8fafc',
-      fontFamily: "'Outfit', sans-serif"
-    }}>
+    <div className="asal-shell">
       
       {/* GLOBAL COMMAND HEADER */}
       <Header currentPage={currentPage} setPage={setCurrentPage} />
       
-      <div className="asal-main-container" style={{ 
-        display: 'flex', 
-        flex: 1, 
-        overflow: 'hidden',
-        position: 'relative'
-      }}>
+      <div className="asal-main-container">
         
         {/* TACTICAL SIDEBAR */}
         <Sidebar />
         
         {/* RE-WIRED INTELLIGENCE COMMAND */}
-        <main className="asal-content" style={{ 
-          flex: 1, 
-          overflowY: 'auto', 
-          padding: '2.5rem',
-          background: '#f1f5f9' 
-        }}>
+        <main className="asal-content">
           <div className="content-inner animate-fade-in" key={currentPage}>
             {renderContent()}
           </div>
@@ -59,17 +43,7 @@ function App() {
       </div>
 
       {/* PLATFORM INFRASTRUCTURE STATUS */}
-      <footer style={{ 
-        height: '40px', 
-        background: 'white', 
-        borderTop: '2px solid rgba(15, 23, 42, 0.08)', 
-        display: 'flex', 
-        alignItems: 'center', 
-        padding: '0 2.5rem',
-        fontSize: '0.75rem',
-        color: '#64748b',
-        fontFamily: "'Space Mono', monospace"
-      }}>
+      <footer className="asal-footer">
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           <span style={{ color: '#10b981' }}>●</span> SYSTEM_NOMINAL // PRISTINE_REWIRE_COMPLETE
         </div>

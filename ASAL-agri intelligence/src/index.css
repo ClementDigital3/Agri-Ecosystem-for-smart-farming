@@ -40,22 +40,36 @@ body {
 
 /* Core Layout: Fixed & Functional */
 .asal-shell {
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  background: var(--bg);
 }
 
 .asal-main-container {
   display: flex;
   flex: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .asal-content {
   flex: 1;
   overflow-y: auto;
   padding: 2.5rem;
-  background: rgba(248, 250, 252, 0.4);
+  background: #f1f5f9;
+}
+
+.asal-footer {
+  height: 40px;
+  background: white;
+  border-top: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 2.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-data);
 }
 
 /* Components: Standardized Surfaces */
@@ -174,5 +188,15 @@ body {
     width: 100%;
     border-bottom: 2px solid var(--border);
     padding: 1.5rem !important;
+  }
+  .asal-footer {
+    height: auto;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .asal-footer > div {
+    margin-left: 0 !important;
   }
 }
