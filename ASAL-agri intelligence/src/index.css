@@ -65,12 +65,14 @@ body {
   border-radius: 4px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), border-color 1.2s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .card:hover {
   border-color: var(--primary);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 30px -3px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px) scale(1.01);
 }
 
 .card-title {
@@ -116,12 +118,45 @@ body {
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-/* Animation: Zero-Lag Fade Only */
+/* Animation: Cinematic Fade */
 .animate-fade-in {
-  animation: simpleFade 0.3s ease-out forwards;
+  animation: cinematicFade 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
-@keyframes simpleFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes cinematicFade {
+  from { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS (PERFECT BALANCE & VISIBILITY)
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+  .asal-shell {
+    height: auto !important;
+    min-height: 100vh;
+  }
+  .asal-main-container {
+    flex-direction: column;
+    overflow: visible;
+  }
+  .asal-content {
+    padding: 1.5rem 1rem;
+    overflow: visible;
+  }
+  .macro-hud {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .hud-pill {
+    padding: 1rem;
+  }
+  .card {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
 }
