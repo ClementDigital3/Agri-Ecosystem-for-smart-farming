@@ -124,7 +124,7 @@ footer {
   border: 1px solid var(--border-glass);
   border-radius: 16px;
   box-shadow: 0 25px 50px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.7);
-  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 1.2s cubic-bezier(0.19, 1, 0.22, 1), filter 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* Role Cards specifically */
@@ -146,14 +146,16 @@ footer {
 }
 
 .role-card.farmer:hover {
-  box-shadow: 0 40px 80px rgba(16, 185, 129, 0.25), inset 0 0 0 1px rgba(255,255,255,0.8);
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 40px 80px rgba(16, 185, 129, 0.25), inset 0 0 0 1px rgba(255,255,255,0.9);
 }
 .role-card.farmer:hover::before {
   background: var(--primary);
 }
 
 .role-card.official:hover {
-  box-shadow: 0 40px 80px rgba(59, 130, 246, 0.25), inset 0 0 0 1px rgba(255,255,255,0.8);
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 40px 80px rgba(59, 130, 246, 0.25), inset 0 0 0 1px rgba(255,255,255,0.9);
 }
 .role-card.official:hover::before {
   background: var(--secondary);
@@ -259,8 +261,9 @@ footer {
   transition: all 0.2s ease;
 }
 .styled-input:focus {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+  transform: translateY(-1px);
 }
 
 /* Specific focus bounds */
@@ -284,7 +287,7 @@ footer {
 }
 
 .submit-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
 }
 
 .env-farmer .submit-btn {
@@ -319,12 +322,21 @@ footer {
 }
 
 .animate-in {
-  animation: slideFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Ultra-smooth deterministic dramatic reveal */
+  animation: cinematicReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes slideFadeIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes cinematicReveal {
+  0% { 
+    opacity: 0; 
+    transform: translateY(40px) scale(0.95);
+    filter: blur(10px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+    filter: blur(0px);
+  }
 }
 
 .pulse-dot {
@@ -349,18 +361,18 @@ footer {
 
 .parallax-bg {
   transform: translate(calc(var(--mouse-x, 0) * -30px), calc(var(--mouse-y, 0) * -30px)) scale(1.05);
-  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .dynamic-tilt-header {
   transform: perspective(2500px) rotateY(calc(var(--mouse-x, 0) * 5deg)) rotateX(calc(var(--mouse-y, 0) * -5deg));
-  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .dynamic-3d-scene {
   transform: perspective(3000px) rotateY(calc(var(--mouse-x, 0) * 15deg)) rotateX(calc(var(--mouse-y, 0) * -15deg));
   transform-style: preserve-3d;
-  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* Continuous breathing idle animation */
