@@ -19,7 +19,7 @@ const Dashboard = () => {
     <div className="dashboard-root" style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
       
       {/* MACRO-REGIONAL HUD // RESTORED DATA INTEGRITY */}
-      <div className="macro-hud" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+      <div className="macro-hud" style={{ gap: '1.5rem' }}>
         {[
           { label: 'REGIONAL_STATUS', value: currentData.status, color: '#10b981' },
           { label: 'ORBITAL_PLANE', value: 'GEO_SYNC_01', color: '#3b82f6' },
@@ -33,7 +33,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '2.5rem', alignItems: 'start' }}>
+      <div className="dashboard-layout" style={{ gap: '2.5rem', alignItems: 'start' }}>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
           

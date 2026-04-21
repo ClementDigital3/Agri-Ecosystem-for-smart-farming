@@ -3,13 +3,11 @@ import React from 'react';
 const Header = ({ currentPage, setPage }) => {
   return (
     <header className="asal-header" style={{ 
-      height: '80px', 
       background: 'white', 
       borderBottom: '2px solid rgba(15, 23, 42, 0.08)', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'space-between', 
-      padding: '0 2.5rem',
       position: 'sticky',
       top: 0,
       zIndex: 1000
@@ -24,7 +22,7 @@ const Header = ({ currentPage, setPage }) => {
       </div>
 
       {/* RE-WIRED NAVIGATION BUTTONS */}
-      <nav style={{ display: 'flex', gap: '2rem' }}>
+      <nav className="asal-nav">
         {[
           { id: 'dashboard', label: 'Dashboard' },
           { id: 'advisory', label: 'Advisory' },
@@ -54,7 +52,7 @@ const Header = ({ currentPage, setPage }) => {
       </nav>
 
       {/* User Profile / Status */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+      <div className="asal-profile" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
          <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '0.8rem', fontWeight: '800' }}>John Kamau</div>
             <div style={{ fontSize: '0.65rem', color: '#64748b' }}>County Officer</div>

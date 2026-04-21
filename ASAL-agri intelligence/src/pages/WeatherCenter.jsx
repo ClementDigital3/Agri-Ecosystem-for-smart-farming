@@ -15,7 +15,7 @@ const WeatherCenter = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.5fr) 1fr', gap: '1.5rem' }}>
+      <div className="grid-main-sidebar" style={{ gap: '1.5rem', '--desktop-cols': 'minmax(0, 1.5fr) 1fr' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Satellite Cloud Cover Visualization */}

@@ -72,6 +72,31 @@ body {
   font-family: var(--font-data);
 }
 
+.asal-header {
+  height: 80px;
+  padding: 0 2.5rem;
+}
+
+.asal-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+}
+
+.grid-main-sidebar {
+  display: grid;
+  grid-template-columns: var(--desktop-cols, 1fr 300px);
+}
+
+.grid-2-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 /* Components: Standardized Surfaces */
 .card {
   background: var(--surface);
@@ -161,6 +186,27 @@ body {
   .asal-content {
     padding: 1.5rem 1rem;
     overflow: visible;
+  }
+  .dashboard-layout, 
+  .grid-main-sidebar, 
+  .grid-2-cols {
+    grid-template-columns: 1fr !important;
+  }
+  .asal-header {
+    height: auto;
+    padding: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center !important;
+    text-align: center;
+  }
+  .asal-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .asal-profile {
+    display: none !important;
   }
   .macro-hud {
     grid-template-columns: 1fr;

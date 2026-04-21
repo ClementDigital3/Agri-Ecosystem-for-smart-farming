@@ -23,7 +23,7 @@ const MarketPrices = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '1.5rem' }}>
+      <div className="grid-main-sidebar" style={{ gap: '1.5rem', '--desktop-cols': '1fr 340px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Comparative Table */}
@@ -62,7 +62,7 @@ const MarketPrices = () => {
           {/* Logistics Tracking */}
           <section className="card">
             <h3 className="card-title">Regional Logistics Intelligence</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="grid-2-cols" style={{ gap: '1.5rem' }}>
                <div style={{ padding: '1rem', background: '#f8fafc', borderRadius: '12px' }}>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Transport Cost Index</div>
                   <div style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--primary)' }}>KSh 42.1 / Ton-Km</div>

@@ -25,7 +25,7 @@ const SupportCommand = () => {
   };
 
   return (
-    <div className="support-command-page" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: '2rem' }}>
+    <div className="support-command-page grid-main-sidebar" style={{ gap: '2rem', '--desktop-cols': 'minmax(0, 1fr) 400px' }}>
       
       <div className="command-main">
         <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Support Command Center 🎧</h2>
@@ -78,7 +78,7 @@ const SupportCommand = () => {
         </div>
 
         {/* Intelligence Context for the Call */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '2rem' }}>
+        <div className="grid-2-cols" style={{ gap: '1.5rem', marginTop: '2rem' }}>
            <div className="card" style={{ padding: '1.25rem' }}>
              <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Farmer History</h4>
              <ul style={{ fontSize: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', listStyle: 'none' }}>

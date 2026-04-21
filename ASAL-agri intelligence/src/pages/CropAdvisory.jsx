@@ -20,7 +20,7 @@ const CropAdvisory = () => {
         <button style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '0.75rem 1.25rem', borderRadius: '10px', fontWeight: '700', cursor: 'pointer' }}>Generate Regional Report</button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '1.5rem' }}>
+      <div className="grid-main-sidebar" style={{ gap: '1.5rem', '--desktop-cols': '1fr 380px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           {/* Suitability Matrix */}
