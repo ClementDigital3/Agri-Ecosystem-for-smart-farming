@@ -182,9 +182,9 @@ function App() {
       <div className="app-container">
         <header className="dynamic-tilt-header">
           <div>
-            <div className="mono-tag" style={{ color: 'var(--secondary)', marginBottom: '0.5rem' }}>SYSTEM_STATUS // ONLINE_NOMINAL</div>
-            <h1 className="title-main">Agri-Ecosystem</h1>
-            <div className="subtitle">
+            <div className="mono-tag animate-text" style={{ color: 'var(--secondary)', marginBottom: '0.5rem', animationDelay: '0.4s' }}>SYSTEM_STATUS // ONLINE_NOMINAL</div>
+            <h1 className="title-main animate-text" style={{ animationDelay: '0.6s' }}>Agri-Ecosystem</h1>
+            <div className="subtitle animate-text" style={{ animationDelay: '0.8s' }}>
               {isAuthorized ? `ENCRYPTED_LINK_VERIFIED: ${role.toUpperCase()}` : 'AWAITING_BIOMETRIC_IDENTIFICATION...'}
             </div>
           </div>
@@ -197,6 +197,7 @@ function App() {
                 <div 
                   onClick={() => setAuthView({ active: true, role: 'farmer', mode: 'login' })}
                   className="glass-panel role-card farmer animate-in floating-idle dynamic-tilt"
+                  style={{ animationDelay: '1.2s ' }}
                 >
                   <div className="icon-wrapper">🚜</div>
                   <h2 className="card-title">FARMER</h2>
@@ -206,7 +207,7 @@ function App() {
                 <div 
                   onClick={() => setAuthView({ active: true, role: 'official', mode: 'login' })}
                   className="glass-panel role-card official animate-in floating-idle dynamic-tilt"
-                  style={{ animationDelay: '0.1s, 0s' }}
+                  style={{ animationDelay: '1.5s', marginLeft: '10px' }}
                 >
                   <div className="icon-wrapper">🏛️</div>
                   <h2 className="card-title">OFFICIAL</h2>
