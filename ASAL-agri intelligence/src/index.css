@@ -160,3 +160,19 @@ body {
     margin-bottom: 1rem;
   }
 }
+
+@media (min-width: 769px) {
+  .asal-sidebar {
+    width: 320px;
+    min-width: 320px;
+    border-right: 2px solid var(--border);
+  }
+}
+
+@media (max-width: 768px) {
+  .asal-sidebar {
+    width: 100%;
+    border-bottom: 2px solid var(--border);
+    padding: 1.5rem !important;
+  }
+}

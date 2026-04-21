@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 const Sidebar = () => {
     return (
         <aside className="asal-sidebar" style={{ 
-            width: '320px', 
             background: 'white', 
-            borderRight: '2px solid var(--border)', 
             padding: '2rem',
             display: 'flex', 
             flexDirection: 'column', 
