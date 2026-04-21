@@ -151,9 +151,10 @@ function App() {
     setAuthView({ active: false, role: null, mode: 'login' });
   };
 
-  const enterApp = (baseUrl) => { 
+  const enterApp = (defaultUrl, envUrl) => { 
     // Secure Handshake: Passing encoded identity to the sub-app
     const payload = btoa(JSON.stringify({ ...userData, role }));
+    const baseUrl = envUrl || defaultUrl;
     window.location.href = `${baseUrl}?user=${payload}`; 
   };
 
@@ -212,7 +213,7 @@ function App() {
                 <div 
                   className="glass-panel role-card farmer floating-idle dynamic-tilt" 
                   style={{ width: '600px' }}
-                  onClick={() => enterApp('http://localhost:5173')}
+                  onClick={() => enterApp('http://localhost:5173', import.meta.env.VITE_SHAMBAIQ_URL)}
                 >
                   <div className="mono-tag" style={{ color: 'var(--primary)', marginBottom: '2rem' }}>WELCOME_BACK // NODE_ACTIVE</div>
                   <h2 style={{ fontSize: '5rem', fontWeight: '900', letterSpacing: '-0.05em', marginBottom: '3rem' }}>ShambaIQ</h2>
@@ -222,7 +223,7 @@ function App() {
                 <>
                   <div 
                     className="glass-panel role-card official floating-idle dynamic-tilt" 
-                    onClick={() => enterApp('http://localhost:5173')}
+                    onClick={() => enterApp('http://localhost:5173', import.meta.env.VITE_SHAMBAIQ_URL)}
                   >
                     <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: 'var(--text-muted)' }}>Node_Manager</h2>
                     <p className="mono-tag" style={{ marginTop: '2rem' }}>REGIONAL_AUDIT_TERMINAL</p>
@@ -230,7 +231,7 @@ function App() {
                   <div 
                     className="glass-panel role-card official floating-idle dynamic-tilt" 
                     style={{ animationDelay: '0.1s, 0s' }}
-                    onClick={() => enterApp('http://localhost:5174')}
+                    onClick={() => enterApp('http://localhost:5174', import.meta.env.VITE_ASAL_URL)}
                   >
                     <h2 style={{ fontSize: '3rem', color: 'var(--secondary)', fontWeight: '900' }}>ASAL_HUB</h2>
                     <div className="card-action mono-tag" style={{ marginTop: '2.5rem', background: 'var(--secondary)', color: '#fff', padding: '1rem 2rem' }}>OPEN_STRATEGIC_ASAL</div>

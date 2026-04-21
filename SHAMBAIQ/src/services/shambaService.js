@@ -40,7 +40,8 @@ export async function getWeatherData() {
 
   try {
     // Fetch live weather data for Eldoret (Lat: 0.5143, Lon: 35.2698)
-    const res = await fetch('http://localhost:3001/api/weather?lat=0.5143&lon=35.2698')
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const res = await fetch(`${apiUrl}/api/weather?lat=0.5143&lon=35.2698`)
     if (res.ok) {
       const liveData = await res.json()
       // Merge live satellite data over the static mock data

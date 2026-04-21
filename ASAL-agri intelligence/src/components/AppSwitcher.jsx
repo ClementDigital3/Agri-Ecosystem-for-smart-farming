@@ -9,7 +9,7 @@ const AppSwitcher = ({ currentApp }) => {
       name: 'ASAL Platform', 
       role: 'Strategic Intelligence', 
       icon: '🏛️', 
-      url: 'http://localhost:5174',
+      url: import.meta.env.VITE_ASAL_URL || 'http://localhost:5174',
       active: currentApp === 'asal'
     },
     { 
@@ -17,7 +17,7 @@ const AppSwitcher = ({ currentApp }) => {
       name: 'ShambaIQ', 
       role: 'Tactical Farm Monitoring', 
       icon: '🚜', 
-      url: 'http://localhost:5173',
+      url: import.meta.env.VITE_SHAMBAIQ_URL || 'http://localhost:5173',
       active: currentApp === 'shambaiq'
     }
   ];
