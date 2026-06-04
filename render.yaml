@@ -31,3 +31,28 @@ services:
           type: web
           name: shambaiq-api
           envVarKey: RENDER_EXTERNAL_URL
+      - key: VITE_GATEWAY_URL
+        fromService:
+          type: web
+          name: agri-gateway
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # ---------------------------------------------
+  # 3. AGRI-GATEWAY PORTAL (React Static Site)
+  # ---------------------------------------------
+  - type: web
+    name: agri-gateway
+    env: static
+    rootDir: AGRI-GATEWAY
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "dist"
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
+    envVars:
+      - key: VITE_SHAMBAIQ_URL
+        fromService:
+          type: web
+          name: shambaiq-app
+          envVarKey: RENDER_EXTERNAL_URL

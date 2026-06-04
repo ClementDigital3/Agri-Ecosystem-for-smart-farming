@@ -67,7 +67,7 @@ const AuthTerminal = ({ role, mode, onSucceed, onToggleMode, onBack }) => {
   return (
     <div className={`glass-panel form-container animate-in ${themeClass} floating-idle dynamic-tilt`}>
       <div className="form-header">
-        <button type="button" onClick={onBack} className="back-btn mono-tag">← ABORT_ACCESS</button>
+        {onBack ? <button type="button" onClick={onBack} className="back-btn mono-tag">← ABORT_ACCESS</button> : <div />}
         <div style={{ textAlign: 'right' }}>
           <div className="mono-tag" style={{ color: isFarmer ? 'var(--primary)' : 'var(--secondary)' }}>
             TARGET_NODE: {role.toUpperCase()}
@@ -139,10 +139,10 @@ const AuthTerminal = ({ role, mode, onSucceed, onToggleMode, onBack }) => {
 // -----------------------------------------------------------------------------
 
 function App() {
-  const [role, setRole] = useState(null); 
+  const [role, setRole] = useState('farmer'); 
   const [userData, setUserData] = useState(null);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [authView, setAuthView] = useState({ active: false, role: null, mode: 'login' });
+  const [authView, setAuthView] = useState({ active: true, role: 'farmer', mode: 'login' });
 
   // Extremely performant exact CSS-variable mapping
   useEffect(() => {
@@ -164,6 +164,13 @@ function App() {
     setUserData(data);
     setIsAuthorized(true);
     setAuthView({ active: false, role: null, mode: 'login' });
+    
+    // Auto-handshake redirect to ShambaIQ
+    const envUrl = import.meta.env.VITE_SHAMBAIQ_URL;
+    const defaultUrl = 'http://localhost:5173';
+    const payload = btoa(JSON.stringify({ ...data, role: finalRole }));
+    const baseUrl = envUrl || defaultUrl;
+    window.location.href = `${baseUrl}?user=${payload}`;
   };
 
   const enterApp = (defaultUrl, envUrl) => { 
@@ -220,7 +227,7 @@ function App() {
                 mode={authView.mode} 
                 onSucceed={finalizeAuth}
                 onToggleMode={() => setAuthView(prev => ({ ...prev, mode: prev.mode === 'login' ? 'register' : 'login' }))}
-                onBack={() => setAuthView({ active: false, role: null, mode: 'login' })}
+                onBack={null}
               />
             )
           ) : (
