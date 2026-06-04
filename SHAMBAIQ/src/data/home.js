@@ -1,6 +1,13 @@
 export const homeBrand = {
   title: 'Shamba IQ',
-  subtitle: 'Smart dryland farming',
+  get subtitle() {
+    return new Date().toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  },
   status: 'Daily dashboard',
 }
 

@@ -1,6 +1,13 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
+const currentDate = new Date().toLocaleDateString('en-US', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+})
+
 function BrandIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -40,7 +47,7 @@ function AppNavigation({ items, onSignOut }) {
             <BrandIcon />
           </span>
           <div>
-            <span className="app-mobile-brand__kicker">Smart dryland farming</span>
+            <span className="app-mobile-brand__kicker">{currentDate}</span>
             <strong className="app-mobile-brand__title">Shamba IQ</strong>
           </div>
         </div>
@@ -125,7 +132,7 @@ function AppNavigation({ items, onSignOut }) {
             <BrandIcon />
           </span>
           <div>
-            <span className="app-mobile-brand__kicker">Smart dryland farming</span>
+            <span className="app-mobile-brand__kicker">{currentDate}</span>
             <strong className="app-mobile-brand__title">Shamba IQ</strong>
           </div>
         </div>

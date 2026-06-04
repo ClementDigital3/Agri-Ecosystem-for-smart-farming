@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
 
+const currentDate = new Date().toLocaleDateString('en-US', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+})
+
 const KENYAN_COUNTIES = [
   "01. Mombasa County",
   "02. Kwale County",
@@ -325,7 +332,7 @@ function Auth({ onSignInSuccess }) {
             </svg>
           </div>
           <h1 className="auth-brand-title">ShambaIQ</h1>
-          <p className="auth-brand-subtitle">Smart Dryland Farming & Satellite Telemetry</p>
+          <p className="auth-brand-subtitle">{currentDate} & Satellite Telemetry</p>
         </div>
 
         {/* Tab switchers only visible in Sign In / Sign Up states */}
