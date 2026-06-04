@@ -27,7 +27,7 @@ function CloseIcon() {
   )
 }
 
-function AppNavigation({ items }) {
+function AppNavigation({ items, onSignOut }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const closeMenu = () => setIsOpen(false)
@@ -89,6 +89,32 @@ function AppNavigation({ items }) {
                 <span>{item.label}</span>
               </NavLink>
             ))}
+
+            <button 
+              type="button" 
+              className="app-mobile-drawer__link"
+              onClick={() => {
+                closeMenu()
+                onSignOut()
+              }}
+              style={{
+                background: 'rgba(239, 68, 68, 0.08)',
+                border: '1px solid rgba(239, 68, 68, 0.15)',
+                width: 'calc(100% - 2rem)',
+                margin: '1.5rem 1rem 0',
+                textAlign: 'left',
+                color: '#dc2626',
+                fontWeight: '800',
+                padding: '0.8rem 1rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                borderRadius: '8px'
+              }}
+            >
+              🚪 Sign Out
+            </button>
           </div>
         </nav>
       </div>
@@ -117,6 +143,29 @@ function AppNavigation({ items }) {
               {item.label}
             </NavLink>
           ))}
+
+          <button 
+            type="button" 
+            className="app-desktop-nav__link"
+            onClick={onSignOut}
+            style={{
+              background: 'rgba(239, 68, 68, 0.08)',
+              border: '1px solid rgba(239, 68, 68, 0.15)',
+              color: '#dc2626',
+              fontWeight: '700',
+              marginLeft: '0.5rem',
+              cursor: 'pointer',
+              minHeight: '2.5rem',
+              padding: '0.55rem 0.9rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '999px',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            🚪 Sign Out
+          </button>
         </nav>
       </header>
     </>

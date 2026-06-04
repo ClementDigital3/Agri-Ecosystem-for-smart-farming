@@ -24,9 +24,15 @@ function scaleBars(values, minimum = 22, maximum = 88) {
   })
 }
 
-export async function getWeatherData() {
+export async function getWeatherData(lat, lon) {
+  const queryLat = lat ?? 0.5143
+  const queryLon = lon ?? 35.2698
+
   const baseData = {
-    current: weatherCurrent,
+    current: {
+      ...weatherCurrent,
+      location: lat && lon ? `Field Coords: ${Number(lat).toFixed(4)}, ${Number(lon).toFixed(4)}` : weatherCurrent.location
+    },
     forecast: weatherForecast,
     rainfallSummary: weatherRainfallSummary,
     alerts: weatherAlerts,
@@ -38,18 +44,31 @@ export async function getWeatherData() {
     soilProfile: soilProfile
   }
 
+  // Dynamic simulation fallback of weather conditions based on coordinates to represent East African diversity
+  if (lat && lon) {
+    const seed = Math.sin(lat) + Math.cos(lon)
+    baseData.current.temperature = Math.round(18 + Math.abs(seed) * 11)
+    baseData.current.humidity = Math.round(45 + Math.abs(Math.sin(lat * 15)) * 40)
+    baseData.current.rainChance = Math.round(30 + Math.abs(Math.cos(lon * 20)) * 60)
+    baseData.current.condition = Math.abs(seed) > 0.65 ? 'Heavy Showers' : Math.abs(seed) > 0.3 ? 'Cloudy & Humid' : 'Clear Sunny'
+  }
+
   try {
-    // Fetch live weather data for Eldoret (Lat: 0.5143, Lon: 35.2698)
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-    const res = await fetch(`${apiUrl}/api/weather?lat=0.5143&lon=35.2698`)
+    const res = await fetch(`${apiUrl}/api/weather?lat=${queryLat}&lon=${queryLon}`)
     if (res.ok) {
       const liveData = await res.json()
-      // Merge live satellite data over the static mock data
       baseData.metrics = liveData.metrics
       baseData.wind = liveData.windData
+      if (liveData.current) {
+        baseData.current = {
+          ...baseData.current,
+          ...liveData.current
+        }
+      }
     }
   } catch (err) {
-    console.warn("Backend offline. Falling back to offline mock weather data.", err)
+    console.warn("Backend offline. Fallback to offline mock weather data.", err)
   }
 
   return baseData
@@ -66,8 +85,11 @@ export function getAlerts() {
   return alerts
 }
 
-export function getMarketPrices() {
-  return marketPrices
+export function getMarketPrices(region = 'all') {
+  if (region === 'all') {
+    return marketPrices
+  }
+  return marketPrices.filter((item) => item.region === region)
 }
 
 export function getDashboardSnapshot() {
@@ -92,12 +114,23 @@ export function getHomeDashboardData() {
   const cropPerformanceBars = scaleBars([58, 64, 72, 78, 82])
   const marketPulseBars = scaleBars([42, 48, 56, 63, 74])
 
+  // Custom user override if session exists
+  const session = localStorage.getItem('shambaiq_user_session')
+  const userProfile = { ...farmerProfile }
+  if (session) {
+    const parsed = JSON.parse(session)
+    userProfile.name = parsed.name || userProfile.name
+    userProfile.location = parsed.location || userProfile.location
+    userProfile.farmName = parsed.farmName || userProfile.farmName
+    userProfile.greetingNote = `Your fields look calm this morning, ${userProfile.name}. Review localized weather and active block alerts.`
+  }
+
   return {
     brand: {
       ...homeBrand,
       notificationCount: alerts.length,
     },
-    user: farmerProfile,
+    user: userProfile,
     weather: {
       label: "Today's weather",
       day: todayWeather.day ?? 'Today',

@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import PageHeader from '../components/PageHeader'
 import MarketTradingBoard from '../components/MarketTradingBoard'
 import MarketDemandChart from '../components/MarketDemandChart'
@@ -5,7 +6,8 @@ import MarketTrendRunner from '../components/MarketTrendRunner'
 import { getMarketPrices } from '../services/shambaService'
 
 function MarketPrices() {
-  const prices = getMarketPrices()
+  const [selectedRegion, setSelectedRegion] = useState('all')
+  const prices = getMarketPrices(selectedRegion)
 
   const sparkline = (pts) => (
     <svg width="100" height="30" style={{ padding: '4px' }}>
@@ -33,7 +35,7 @@ function MarketPrices() {
 
         <div className="market-dashboard-spread">
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+          <div className="market-projections-grid">
              <MarketDemandChart />
              
              {/* Trend Analysis Card */}
@@ -55,9 +57,40 @@ function MarketPrices() {
              </div>
           </div>
 
-          <div className="market-section-title">
-            <h3>Regional Spot Prices</h3>
-            <p>Live trading floors across Eastern hubs.</p>
+          <div className="market-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div>
+              <h3 style={{ margin: 0 }}>Regional Spot Prices</h3>
+              <p style={{ margin: '0.2rem 0 0', color: '#64748b', fontSize: '0.85rem' }}>Live trading floors across East African hubs.</p>
+            </div>
+            
+            <div className="market-filter-wrapper" style={{ display: 'flex', alignItems: 'center' }}>
+              <label htmlFor="market-region-select" style={{ fontSize: '0.75rem', fontWeight: '800', color: '#64748b', marginRight: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Region Hub:</label>
+              <select 
+                id="market-region-select" 
+                value={selectedRegion}
+                onChange={(e) => setSelectedRegion(e.target.value)}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid rgba(15, 23, 42, 0.12)',
+                  padding: '0.45rem 1rem',
+                  borderRadius: '8px',
+                  fontFamily: 'inherit',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  color: '#0f172a',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
+                }}
+              >
+                <option value="all">🌐 All East Africa</option>
+                <option value="kenya-rift">🌾 Kenya - Rift Valley</option>
+                <option value="kenya-central">🏙️ Kenya - Central (Nairobi)</option>
+                <option value="kenya-eastern">☀️ Kenya - ASAL (Eastern)</option>
+                <option value="uganda">🇺🇬 Uganda Hubs</option>
+                <option value="tanzania">🇹🇿 Tanzania Hubs</option>
+              </select>
+            </div>
           </div>
           <MarketTradingBoard prices={prices} />
         </div>

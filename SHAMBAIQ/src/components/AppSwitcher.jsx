@@ -4,6 +4,7 @@ const AppSwitcher = ({ currentApp }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const apps = [
+    /*
     { 
       id: 'gateway', 
       name: 'Agri-Gateway', 
@@ -20,6 +21,7 @@ const AppSwitcher = ({ currentApp }) => {
       url: import.meta.env.VITE_ASAL_URL || 'http://localhost:5174',
       active: currentApp === 'asal'
     },
+    */
     { 
       id: 'shambaiq', 
       name: 'ShambaIQ', 
@@ -94,10 +96,12 @@ const AppSwitcher = ({ currentApp }) => {
           </div>
           <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
              <button style={{ background: 'none', border: 'none', fontSize: '0.75rem', color: '#64748b', fontWeight: '700', cursor: 'pointer' }}>Manage Permissions</button>
+             {/*
              <a href={import.meta.env.VITE_GATEWAY_URL || 'http://localhost:5000'} style={{ textDecoration: 'none', background: '#fee2e2', border: '1px solid #fecaca', fontSize: '0.75rem', color: '#dc2626', fontWeight: '800', cursor: 'pointer', padding: '0.4rem 0.8rem', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                  SIGN OUT
              </a>
+             */}
           </div>
         </div>
       )}

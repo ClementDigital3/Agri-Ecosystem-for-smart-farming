@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import AppNavigation from './components/AppNavigation'
 import BottomNav from './components/BottomNav'
@@ -8,7 +9,8 @@ import MarketPrices from './pages/MarketPrices'
 import MyFarm from './pages/MyFarm'
 import Weather from './pages/Weather'
 import ProfitabilityPage from './pages/ProfitabilityPage'
-import GlobalAlert from './components/GlobalAlert'
+import Auth from './pages/Auth'
+// import GlobalAlert from './components/GlobalAlert'
 import AiChatbot from './components/AiChatbot'
 import GlobalFooter from './components/GlobalFooter'
 import NetworkStatus from './components/NetworkStatus'
@@ -34,9 +36,28 @@ const bottomNavItems = [
 ]
 
 function App() {
+  const [userSession, setUserSession] = useState(() => {
+    const saved = localStorage.getItem('shambaiq_user_session')
+    return saved ? JSON.parse(saved) : null
+  })
+
+  const handleSignOut = () => {
+    localStorage.removeItem('shambaiq_user_session')
+    setUserSession(null)
+  }
+
+  if (!userSession) {
+    return (
+      <div className="app-shell app-shell--auth">
+        <Auth onSignInSuccess={setUserSession} />
+        <NetworkStatus />
+      </div>
+    )
+  }
+
   return (
     <div className="app-shell">
-      <AppNavigation items={navItems} />
+      <AppNavigation items={navItems} onSignOut={handleSignOut} />
       <main className="app-frame">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -51,7 +72,7 @@ function App() {
         <GlobalFooter />
       </main>
       <BottomNav items={bottomNavItems} />
-      <GlobalAlert />
+      {/* <GlobalAlert /> */}
       <NetworkStatus />
       <AiChatbot />
     </div>

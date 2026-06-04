@@ -14,8 +14,18 @@ function Weather() {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    // Fetch live data on mount
-    getWeatherData().then(setData)
+    // Fetch live data on mount based on linked farm coords
+    const savedFarm = localStorage.getItem('shambaiq_farm_details')
+    let lat = null
+    let lon = null
+    if (savedFarm) {
+      const parsed = JSON.parse(savedFarm)
+      if (parsed.centerLatLng) {
+        lat = parsed.centerLatLng.lat
+        lon = parsed.centerLatLng.lng
+      }
+    }
+    getWeatherData(lat, lon).then(setData)
   }, [])
 
   if (!data) {

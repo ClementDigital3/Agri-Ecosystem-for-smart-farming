@@ -34,7 +34,7 @@ const BioPassport = ({ cropName, grade, healthScore }) => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+      <div className="bio-passport-grid">
         <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '12px' }}>
           <div style={{ fontSize: '0.6rem', color: '#94a3b8' }}>HEALTH_INDEX</div>
           <div style={{ fontSize: '1.2rem', fontWeight: '700' }}>{healthScore}%</div>

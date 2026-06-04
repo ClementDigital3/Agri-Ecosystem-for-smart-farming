@@ -17,6 +17,12 @@ function AiChatbot() {
     scrollToBottom()
   }, [messages, isTyping])
 
+  useEffect(() => {
+    const handleOpen = () => setOpen(true)
+    window.addEventListener('open-shamba-ai', handleOpen)
+    return () => window.removeEventListener('open-shamba-ai', handleOpen)
+  }, [])
+
   const handleSend = (e) => {
     e.preventDefault()
     if(!input.trim()) return

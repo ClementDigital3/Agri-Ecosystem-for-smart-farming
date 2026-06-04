@@ -33,7 +33,7 @@ function Alerts() {
 
       <PropagationMap />
       
-      <div className="alerts-layout-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 350px', gap: '1.5rem', marginTop: '1.5rem' }}>
+      <div className="alerts-layout-grid">
         <div className="alert-inbox">
           {sortedAlerts.map((alert) => (
             <div key={alert.id} className={`alert-card alert-card--${alert.level}`}>
