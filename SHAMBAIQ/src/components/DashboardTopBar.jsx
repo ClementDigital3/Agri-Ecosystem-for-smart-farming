@@ -47,8 +47,9 @@ function DashboardTopBar({ title, subtitle, status, notificationCount }) {
           <span className="dashboard-notification__badge">{notificationCount}</span>
         </button>
         
-        {/* Global Ecosystem Switcher */}
+        {/* Global Ecosystem Switcher
         <AppSwitcher currentApp="shambaiq" />
+        */}
       </div>
     </header>
   )
