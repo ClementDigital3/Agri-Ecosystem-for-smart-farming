@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import TreatmentPlanPanel from './TreatmentPlanPanel'
 
 const WHEAT_RUST_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="%231e293b"/><path d="M 200,20 C 230,100 240,200 210,280 C 180,280 170,180 180,100 Z" fill="%23a3a04c"/><circle cx="195" cy="80" r="3" fill="%23c25e17"/><circle cx="205" cy="110" r="4" fill="%23c25e17"/><circle cx="188" cy="130" r="3.5" fill="%23a1490a"/><circle cx="212" cy="160" r="4.5" fill="%23c25e17"/><circle cx="192" cy="180" r="3" fill="%23a1490a"/><circle cx="202" cy="210" r="4.5" fill="%23c25e17"/><circle cx="197" cy="240" r="3.5" fill="%23a1490a"/><text x="20" y="270" fill="%2394a3b8" font-size="12" font-family="sans-serif">Sample: Wheat Rust (Puccinia)</text></svg>`
@@ -10,9 +10,18 @@ function CropDoctorScanner() {
   const [result, setResult] = useState(null)
   const [showPlan, setShowPlan] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
+  const [scanProgress, setScanProgress] = useState(0)
+  const [scanStepText, setScanStepText] = useState('Initializing scan...')
   
   const cameraInputRef = useRef(null)
   const fileInputRef = useRef(null)
+  const scanIntervalRef = useRef(null)
+
+  useEffect(() => {
+    return () => {
+      if (scanIntervalRef.current) clearInterval(scanIntervalRef.current)
+    }
+  }, [])
 
   const handleFileChange = (e, isCamera) => {
     const file = e.target.files[0]
@@ -20,74 +29,73 @@ function CropDoctorScanner() {
       const reader = new FileReader()
       reader.onload = (event) => {
         setImageSrc(event.target.result)
-        startScan(file)
+        const isWheat = file.name.toLowerCase().includes('wheat') || 
+                        file.name.toLowerCase().includes('rust') || 
+                        Math.random() > 0.5
+        runScanSimulation(isWheat)
       }
       reader.readAsDataURL(file)
     }
   }
 
-  const startScan = (file) => {
-    setScanning(true)
-    setShowPlan(false)
+  const runScanSimulation = (isWheat) => {
+    if (scanIntervalRef.current) clearInterval(scanIntervalRef.current)
     
-    // Dynamically diagnose based on filename or randomly
-    const isWheat = file.name.toLowerCase().includes('wheat') || 
-                    file.name.toLowerCase().includes('rust') || 
-                    Math.random() > 0.5
+    setScanning(true)
+    setScanProgress(0)
+    setScanStepText('Analyzing leaf contour...')
+    setShowPlan(false)
 
-    setTimeout(() => {
-      setScanning(false)
-      if (isWheat) {
-        setResult({
-          disease: 'Stem Rust (Puccinia graminis)',
-          confidence: 94,
-          severity: 'Critical Threat (Spreading)',
-          crop: 'Wheat'
-        })
+    let progress = 0
+    scanIntervalRef.current = setInterval(() => {
+      progress += 2
+      
+      if (progress <= 25) {
+        setScanStepText('Isolating leaf lesions & spot patterns...')
+      } else if (progress <= 55) {
+        setScanStepText('Matching symptoms with wheat/maize database...')
+      } else if (progress <= 85) {
+        setScanStepText('Calculating disease severity index...')
       } else {
-        setResult({
-          disease: 'Northern Corn Leaf Blight',
-          confidence: 96,
-          severity: 'Moderate Leaf Necrosis',
-          crop: 'Maize'
-        })
+        setScanStepText('Finalizing diagnostic report...')
       }
-    }, 2500)
+
+      setScanProgress(progress)
+
+      if (progress >= 100) {
+        clearInterval(scanIntervalRef.current)
+        setScanning(false)
+        if (isWheat) {
+          setResult({
+            disease: 'Stem Rust (Puccinia graminis)',
+            confidence: 94,
+            severity: 'Critical Threat (Spreading)',
+            crop: 'Wheat'
+          })
+        } else {
+          setResult({
+            disease: 'Northern Corn Leaf Blight',
+            confidence: 96,
+            severity: 'Moderate Leaf Necrosis',
+            crop: 'Maize'
+          })
+        }
+      }
+    }, 50) // 50ms * 50 steps = 2500ms total
   }
 
   const handleLoadSample = (cropType) => {
-    setScanning(true)
-    setShowPlan(false)
-    
-    if (cropType === 'wheat') {
-      setImageSrc(WHEAT_RUST_SVG)
-      setTimeout(() => {
-        setScanning(false)
-        setResult({
-          disease: 'Stem Rust (Puccinia graminis)',
-          confidence: 94,
-          severity: 'Critical Threat (Spreading)',
-          crop: 'Wheat'
-        })
-      }, 2500)
-    } else {
-      setImageSrc(MAIZE_BLIGHT_SVG)
-      setTimeout(() => {
-        setScanning(false)
-        setResult({
-          disease: 'Northern Corn Leaf Blight',
-          confidence: 96,
-          severity: 'Moderate Leaf Necrosis',
-          crop: 'Maize'
-        })
-      }, 2500)
-    }
+    setImageSrc(cropType === 'wheat' ? WHEAT_RUST_SVG : MAIZE_BLIGHT_SVG)
+    runScanSimulation(cropType === 'wheat')
   }
 
   const handleScanAgain = () => {
+    if (scanIntervalRef.current) clearInterval(scanIntervalRef.current)
     setResult(null)
     setImageSrc(null)
     setShowPlan(false)
+    setScanProgress(0)
+    setScanStepText('Initializing scan...')
     if (cameraInputRef.current) cameraInputRef.current.value = ''
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
@@ -171,7 +179,7 @@ function CropDoctorScanner() {
       )}
 
       {scanning && (
-        <div className="crop-doctor-scanner__dropzone is-scanning" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="crop-doctor-scanner__dropzone is-scanning" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2.5rem 1.5rem' }}>
           {imageSrc && (
             <img 
               src={imageSrc} 
@@ -183,14 +191,23 @@ function CropDoctorScanner() {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                opacity: 0.45,
+                opacity: 0.35,
                 zIndex: 0
               }} 
             />
           )}
           <div className="scanner-line" style={{ zIndex: 2 }}></div>
-          <div className="crop-doctor-scanner__icon pulse" style={{ zIndex: 1 }}>🔍</div>
-          <p style={{ zIndex: 1, fontWeight: 'bold', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>Running computer vision analysis...</p>
+          <div className="crop-doctor-scanner__icon pulse" style={{ zIndex: 1, fontSize: '2.5rem', marginBottom: '1rem' }}>🔍</div>
+          
+          <div style={{ zIndex: 1, width: '85%', background: 'rgba(15, 23, 42, 0.75)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(4px)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#10b981', fontWeight: 'bold', marginBottom: '0.5rem', textAlign: 'left' }}>
+              <span style={{ maxWidth: '80%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{scanStepText}</span>
+              <span>{scanProgress}%</span>
+            </div>
+            <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+              <div style={{ width: `${scanProgress}%`, height: '100%', background: '#10b981', transition: 'width 0.05s linear', boxShadow: '0 0 10px #10b981', borderRadius: '4px' }}></div>
+            </div>
+          </div>
         </div>
       )}
 
