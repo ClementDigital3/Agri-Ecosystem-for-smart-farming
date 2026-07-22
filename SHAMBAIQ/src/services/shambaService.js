@@ -28,10 +28,35 @@ export async function getWeatherData(lat, lon) {
   const queryLat = lat ?? 0.5143
   const queryLon = lon ?? 35.2698
 
+  let resolvedLocation = weatherCurrent.location
+
+  if (lat && lon) {
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data && data.address) {
+          const town = data.address.town || data.address.city || data.address.village || data.address.suburb || data.address.hamlet || ''
+          const county = data.address.county || data.address.state || ''
+          if (town) {
+            resolvedLocation = `${town}, ${county.replace(' County', '')}`
+          } else {
+            resolvedLocation = county.replace(' County', '')
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Reverse geocode failed, fallback to formatted coords", e)
+      const latDir = lat >= 0 ? 'N' : 'S'
+      const lngDir = lon >= 0 ? 'E' : 'W'
+      resolvedLocation = `Farm Zone [${Math.abs(lat).toFixed(3)}° ${latDir}, ${Math.abs(lon).toFixed(3)}° ${lngDir}]`
+    }
+  }
+
   const baseData = {
     current: {
       ...weatherCurrent,
-      location: lat && lon ? `Field Coords: ${Number(lat).toFixed(4)}, ${Number(lon).toFixed(4)}` : weatherCurrent.location
+      location: resolvedLocation
     },
     forecast: weatherForecast,
     rainfallSummary: weatherRainfallSummary,

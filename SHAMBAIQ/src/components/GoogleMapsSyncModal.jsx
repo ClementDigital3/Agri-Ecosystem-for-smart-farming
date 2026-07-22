@@ -61,6 +61,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
   const [computedSize, setComputedSize] = useState(null)
   const [gpsCoords, setGpsCoords] = useState(null)
   const [pointsCount, setPointsCount] = useState(0)
+  const [resolvedPlaceName, setResolvedPlaceName] = useState(null)
   
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
@@ -100,7 +101,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
       polygonRef.current = polygon
 
       // Update statistics
-      const updateAreaStats = () => {
+      const updateAreaStats = async () => {
         const path = polygon.getLatLngs()[0] || []
         setPointsCount(path.length)
         
@@ -118,10 +119,38 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
           })
           const clat = sumLat / path.length
           const clng = sumLng / path.length
-          setGpsCoords(`${clat.toFixed(5)}° S, ${clng.toFixed(5)}° E`)
+
+          const latDirection = clat >= 0 ? 'N' : 'S'
+          const lngDirection = clng >= 0 ? 'E' : 'W'
+          const coordsStr = `${Math.abs(clat).toFixed(5)}° ${latDirection}, ${Math.abs(clng).toFixed(5)}° ${lngDirection}`
+          setGpsCoords(coordsStr)
+
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${clat}&lon=${clng}`)
+            if (res.ok) {
+              const data = await res.json()
+              if (data && data.address) {
+                const town = data.address.town || data.address.city || data.address.village || data.address.suburb || data.address.hamlet || ''
+                const county = data.address.county || data.address.state || ''
+                let nameStr = ''
+                if (town) {
+                  nameStr = `${town}, ${county.replace(' County', '')}`
+                } else {
+                  nameStr = county.replace(' County', '')
+                }
+                if (nameStr) {
+                  setResolvedPlaceName(nameStr)
+                  setFarmName(prev => prev.trim() ? prev : `${nameStr} Farm`)
+                }
+              }
+            }
+          } catch (e) {
+            console.error("Reverse geocoding failed", e)
+          }
         } else {
           setComputedSize(null)
           setGpsCoords(null)
+          setResolvedPlaceName(null)
         }
       }
 
@@ -197,6 +226,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
     setComputedSize(null)
     setGpsCoords(null)
     setSelectedCrops([])
+    setResolvedPlaceName(null)
   }
 
   // Location Geocode Search (OSM Nominatim API)
@@ -258,7 +288,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
       farmSize: computedSize,
       soilType: soilType,
       cropMix: selectedCrops.map(c => c.split(' (')[0]).join(', ') || 'Maize, Sorghum',
-      center: gpsCoords,
+      center: resolvedPlaceName ? `${resolvedPlaceName} (${gpsCoords})` : gpsCoords,
       centerLatLng: { lat: clat, lng: clng },
       boundaryCoords: path.map(pt => ({ lat: pt.lat, lng: pt.lng })),
       zones: [] // Start clean

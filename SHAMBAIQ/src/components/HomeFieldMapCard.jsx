@@ -119,7 +119,7 @@ function HomeFieldMapCard({ title, subtitle, recommendation, zones, badge, gis }
           <div className="home-map-card__map-toolbar">
             <div className="home-map-card__map-chip">
               <span>GIS center</span>
-              <strong>{gis?.center ?? '0.5143 N, 35.2698 E'}</strong>
+              <strong>{gis?.center ?? 'Eldoret, Uasin Gishu (0.51430° N, 35.26980° E)'}</strong>
             </div>
 
             <div className="home-map-card__north-indicator" aria-label="North orientation">

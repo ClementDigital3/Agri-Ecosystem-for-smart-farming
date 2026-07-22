@@ -111,7 +111,7 @@ export const homeFieldMap = {
   badge: 'GIS-ready view',
   recommendation: 'South block is drying faster than the rest of the field. Prioritize scouting and mulch retention there first.',
   gis: {
-    center: '0.5143 N, 35.2698 E',
+    center: 'Eldoret, Uasin Gishu (0.51430° N, 35.26980° E)',
     scale: '1:2,500',
     source: 'Local field records',
     updated: 'Updated 4:00 PM',
