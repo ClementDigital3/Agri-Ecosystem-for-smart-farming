@@ -6,7 +6,7 @@ import MarketTrendRunner from '../components/MarketTrendRunner'
 import { getMarketPrices } from '../services/shambaService'
 
 function MarketPrices() {
-  const [selectedRegion, setSelectedRegion] = useState('all')
+  const [selectedRegion, setSelectedRegion] = useState('kenya-rift')
   const prices = getMarketPrices(selectedRegion)
 
   const sparkline = (pts) => (
@@ -28,7 +28,7 @@ function MarketPrices() {
           accent="market"
           stats={[
             { label: 'Hubs Indexed', value: '14 Active' },
-            { label: 'Top Performer', value: 'Cowpeas' },
+            { label: 'Top Performer', value: 'Maize' },
             { label: 'Volatility', value: 'Low-Med' },
           ]}
         />
@@ -44,8 +44,8 @@ function MarketPrices() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                    {[
                      { name: 'Maize', trend: 'M0,25 L20,15 L40,20 L60,5 L80,10 L100,2', current: '+12%' },
-                     { name: 'Cowpeas', trend: 'M0,10 L20,5 L40,15 L60,25 L80,20 L100,15', current: '+4%' },
-                     { name: 'Sorghum', trend: 'M0,15 L20,18 L40,12 L60,20 L80,25 L100,28', current: '-2%' }
+                     { name: 'Wheat', trend: 'M0,10 L20,5 L40,15 L60,25 L80,20 L100,15', current: '+6%' },
+                     { name: 'Beans (Rosecoco)', trend: 'M0,15 L20,18 L40,12 L60,20 L80,25 L100,28', current: '+4%' }
                    ].map(item => (
                      <div key={item.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '8px' }}>
                         <span style={{ fontSize: '0.8rem', fontWeight: '700' }}>{item.name}</span>

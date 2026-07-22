@@ -3,7 +3,7 @@ function MarketDemandChart() {
     <div className="market-demand-chart">
       <div className="market-demand-chart__header">
         <div>
-          <h3>Cowpeas 30-Day Futures</h3>
+          <h3>Maize 30-Day Futures</h3>
           <p>Highest performing commodity this week</p>
         </div>
         <div className="chart-metrics">

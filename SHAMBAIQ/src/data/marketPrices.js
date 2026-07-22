@@ -78,8 +78,18 @@ export const marketPrices = [
     market: 'Eldoret Hub (NCPB)',
     region: 'kenya-rift',
     unit: '90 kg bag',
-    price: 'KES 3,800',
-    change: '+2%',
+    price: 'KES 4,100',
+    change: '+4%',
+    trend: 'up',
+  },
+  {
+    id: 'market-8-beans',
+    crop: 'Beans (Rosecoco)',
+    market: 'Eldoret Market',
+    region: 'kenya-rift',
+    unit: '90 kg bag',
+    price: 'KES 11,500',
+    change: '+3%',
     trend: 'up',
   },
   {
@@ -88,9 +98,9 @@ export const marketPrices = [
     market: 'Eldoret Hub',
     region: 'kenya-rift',
     unit: '90 kg bag',
-    price: 'KES 5,200',
-    change: '0%',
-    trend: 'steady',
+    price: 'KES 5,400',
+    change: '+2%',
+    trend: 'up',
   },
   // Uganda
   {
