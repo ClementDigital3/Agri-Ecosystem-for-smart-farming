@@ -12,23 +12,24 @@ function ProfitCalculator() {
         return localStorage.getItem('shambaiq_profit_crop') || 'maize';
     });
     
+    // Store as strings/numbers to allow clean deletion in inputs without forcing leading zeros
     const [area, setArea] = useState(() => {
         const val = localStorage.getItem('shambaiq_profit_area');
-        return val !== null ? Number(val) : 5;
+        return val !== null ? val : '5';
     });
     
     const [yieldEstimate, setYieldEstimate] = useState(() => {
         const val = localStorage.getItem('shambaiq_profit_yield');
-        return val !== null ? Number(val) : 15;
+        return val !== null ? val : '15';
     });
     
     const [costs, setCosts] = useState(() => {
         const val = localStorage.getItem('shambaiq_profit_costs');
         return val ? JSON.parse(val) : {
-            seed: 5000,
-            fertilizer: 12000,
-            labor: 25000,
-            other: 8000,
+            seed: '5000',
+            fertilizer: '12000',
+            labor: '25000',
+            other: '8000',
         };
     });
 
@@ -51,24 +52,32 @@ function ProfitCalculator() {
 
     const handleCostChange = (e) => {
         const { name, value } = e.target;
-        setCosts(prev => ({ ...prev, [name]: Number(value) }));
+        setCosts(prev => ({ ...prev, [name]: value }));
     };
 
     const selectedCropData = useMemo(() => {
         return mockMarketPrices.find(p => p.id === selectedCrop) || mockMarketPrices[0];
     }, [selectedCrop]);
 
+    // Cast string inputs to Numbers safely for math calculations
+    const nArea = Number(area) || 0;
+    const nYield = Number(yieldEstimate) || 0;
+    const nCosts = {
+        seed: Number(costs.seed) || 0,
+        fertilizer: Number(costs.fertilizer) || 0,
+        labor: Number(costs.labor) || 0,
+        other: Number(costs.other) || 0
+    };
+
     const marketPrice = selectedCropData.price;
-    const totalYield = area * yieldEstimate;
+    const totalYield = nArea * nYield;
     const grossRevenue = totalYield * marketPrice;
-    const totalCosts = Object.values(costs).reduce((sum, val) => sum + val, 0);
+    const totalCosts = Object.values(nCosts).reduce((sum, val) => sum + val, 0);
     const netProfit = grossRevenue - totalCosts;
     const roi = totalCosts > 0 ? ((netProfit / totalCosts) * 100).toFixed(1) : 0;
     const costPerBag = totalYield > 0 ? (totalCosts / totalYield).toFixed(0) : 0;
 
     const formatCurrency = (value) => new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES', minimumFractionDigits: 0 }).format(value);
-
-    const profitBarWidth = grossRevenue > 0 ? Math.min((netProfit / grossRevenue) * 100, 100) : 0;
 
     return (
         <div className="profit-calc">
@@ -108,8 +117,13 @@ function ProfitCalculator() {
                                 Area (Hectares)
                             </label>
                             <div className="profit-calc__input-wrap">
-                                <input type="number" value={area} min="0.1" step="0.5"
-                                    onChange={(e) => setArea(Number(e.target.value))} />
+                                <input 
+                                    type="number" 
+                                    value={area} 
+                                    min="0" 
+                                    step="any"
+                                    onChange={(e) => setArea(e.target.value)} 
+                                />
                                 <span className="profit-calc__input-unit">Ha</span>
                             </div>
                         </div>
@@ -120,8 +134,12 @@ function ProfitCalculator() {
                                 Est. Yield (Bags/Ha)
                             </label>
                             <div className="profit-calc__input-wrap">
-                                <input type="number" value={yieldEstimate} min="1"
-                                    onChange={(e) => setYieldEstimate(Number(e.target.value))} />
+                                <input 
+                                    type="number" 
+                                    value={yieldEstimate} 
+                                    min="0"
+                                    onChange={(e) => setYieldEstimate(e.target.value)} 
+                                />
                                 <span className="profit-calc__input-unit">90kg bags</span>
                             </div>
                         </div>
@@ -226,7 +244,7 @@ function ProfitCalculator() {
                         </strong>
                         <p className="profit-calc__verdict-note">
                             {netProfit >= 0
-                                ? `You stand to earn ${formatCurrency(netProfit)} per season on ${area} hectares of ${selectedCropData.crop}.`
+                                ? `You stand to earn ${formatCurrency(netProfit)} per season on ${nArea} hectares of ${selectedCropData.crop}.`
                                 : `Current costs exceed projected revenue. Consider reducing expenses or increasing yield targets.`
                             }
                         </p>
