@@ -1,15 +1,20 @@
 import { useState, useRef } from 'react'
 import TreatmentPlanPanel from './TreatmentPlanPanel'
 
+const WHEAT_RUST_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="%231e293b"/><path d="M 200,20 C 230,100 240,200 210,280 C 180,280 170,180 180,100 Z" fill="%23a3a04c"/><circle cx="195" cy="80" r="3" fill="%23c25e17"/><circle cx="205" cy="110" r="4" fill="%23c25e17"/><circle cx="188" cy="130" r="3.5" fill="%23a1490a"/><circle cx="212" cy="160" r="4.5" fill="%23c25e17"/><circle cx="192" cy="180" r="3" fill="%23a1490a"/><circle cx="202" cy="210" r="4.5" fill="%23c25e17"/><circle cx="197" cy="240" r="3.5" fill="%23a1490a"/><text x="20" y="270" fill="%2394a3b8" font-size="12" font-family="sans-serif">Sample: Wheat Rust (Puccinia)</text></svg>`
+
+const MAIZE_BLIGHT_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%"><rect width="400" height="300" fill="%231e293b"/><path d="M 200,10 C 260,80 270,220 210,290 C 190,290 140,220 180,80 Z" fill="%234d8248"/><ellipse cx="200" cy="90" rx="25" ry="8" fill="%238c775c" transform="rotate(-30 200 90)"/><ellipse cx="180" cy="150" rx="30" ry="10" fill="%238c775c" transform="rotate(-15 180 150)"/><ellipse cx="220" cy="210" rx="35" ry="12" fill="%23756249" transform="rotate(-20 220 210)"/><path d="M 197,35 Q 211,160 200,285" stroke="%2371a86c" stroke-width="3" fill="none"/><text x="20" y="270" fill="%2394a3b8" font-size="12" font-family="sans-serif">Sample: Corn Leaf Blight</text></svg>`
+
 function CropDoctorScanner() {
   const [scanning, setScanning] = useState(false)
   const [result, setResult] = useState(null)
   const [showPlan, setShowPlan] = useState(false)
   const [imageSrc, setImageSrc] = useState(null)
   
+  const cameraInputRef = useRef(null)
   const fileInputRef = useRef(null)
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, isCamera) => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -25,7 +30,7 @@ function CropDoctorScanner() {
     setScanning(true)
     setShowPlan(false)
     
-    // Dynamically diagnose based on filename or randomly to fit Uasin Gishu's primary crops
+    // Dynamically diagnose based on filename or randomly
     const isWheat = file.name.toLowerCase().includes('wheat') || 
                     file.name.toLowerCase().includes('rust') || 
                     Math.random() > 0.5
@@ -47,16 +52,44 @@ function CropDoctorScanner() {
           crop: 'Maize'
         })
       }
-    }, 2800)
+    }, 2500)
+  }
+
+  const handleLoadSample = (cropType) => {
+    setScanning(true)
+    setShowPlan(false)
+    
+    if (cropType === 'wheat') {
+      setImageSrc(WHEAT_RUST_SVG)
+      setTimeout(() => {
+        setScanning(false)
+        setResult({
+          disease: 'Stem Rust (Puccinia graminis)',
+          confidence: 94,
+          severity: 'Critical Threat (Spreading)',
+          crop: 'Wheat'
+        })
+      }, 2500)
+    } else {
+      setImageSrc(MAIZE_BLIGHT_SVG)
+      setTimeout(() => {
+        setScanning(false)
+        setResult({
+          disease: 'Northern Corn Leaf Blight',
+          confidence: 96,
+          severity: 'Moderate Leaf Necrosis',
+          crop: 'Maize'
+        })
+      }, 2500)
+    }
   }
 
   const handleScanAgain = () => {
     setResult(null)
     setImageSrc(null)
     setShowPlan(false)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
+    if (cameraInputRef.current) cameraInputRef.current.value = ''
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   return (
@@ -68,21 +101,73 @@ function CropDoctorScanner() {
         </div>
       )}
 
-      {/* Hidden input for camera / file upload */}
+      {/* Hidden input for camera capture */}
       <input 
         type="file" 
-        ref={fileInputRef} 
-        onChange={handleFileChange} 
+        ref={cameraInputRef} 
+        onChange={(e) => handleFileChange(e, true)} 
         accept="image/*" 
         capture="environment" 
         style={{ display: 'none' }} 
       />
 
+      {/* Hidden input for normal file selection */}
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        onChange={(e) => handleFileChange(e, false)} 
+        accept="image/*" 
+        style={{ display: 'none' }} 
+      />
+
       {!result && !scanning && (
-        <div className="crop-doctor-scanner__dropzone" onClick={() => fileInputRef.current.click()} style={{ cursor: 'pointer' }}>
-          <div className="crop-doctor-scanner__icon">📸</div>
-          <p>Tap to take photo or upload leaf image</p>
-        </div>
+        <>
+          <div className="crop-doctor-scanner__dropzone" style={{ cursor: 'default', display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '2rem 1.5rem' }}>
+            <div className="crop-doctor-scanner__icon" style={{ fontSize: '2.5rem' }}>🛡️</div>
+            <p style={{ margin: 0, fontSize: '0.9rem', color: '#cbd5e1' }}>Scan affected crop leaf using one of the options below:</p>
+            
+            <div style={{ display: 'flex', gap: '1rem', width: '100%', justifyContent: 'center' }}>
+              <button 
+                type="button" 
+                className="scan-btn scan-btn--primary"
+                onClick={() => cameraInputRef.current.click()}
+                style={{ width: 'auto', flex: 1, padding: '0.75rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+              >
+                📸 Take Photo
+              </button>
+              <button 
+                type="button" 
+                className="scan-btn scan-btn--secondary"
+                onClick={() => fileInputRef.current.click()}
+                style={{ width: 'auto', flex: 1, padding: '0.75rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                📁 Upload Image
+              </button>
+            </div>
+          </div>
+
+          <div className="crop-doctor-samples-section" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.75rem' }}>💡 Presentation Demo: Test instantly with a sample leaf</p>
+            <div style={{ display: 'flex', gap: '0.8rem', justifyContent: 'center' }}>
+              <button 
+                type="button"
+                className="scan-btn scan-btn--secondary" 
+                onClick={() => handleLoadSample('wheat')}
+                style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', width: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)' }}
+              >
+                🌾 Wheat Rust Sample
+              </button>
+              <button 
+                type="button"
+                className="scan-btn scan-btn--secondary" 
+                onClick={() => handleLoadSample('maize')}
+                style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', width: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(52, 211, 153, 0.08)', border: '1px solid rgba(52, 211, 153, 0.2)' }}
+              >
+                🌽 Maize Blight Sample
+              </button>
+            </div>
+          </div>
+        </>
       )}
 
       {scanning && (
