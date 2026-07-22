@@ -33,6 +33,11 @@ function ProfitCalculator() {
         };
     });
 
+    const [savedEstimates, setSavedEstimates] = useState(() => {
+        const val = localStorage.getItem('shambaiq_saved_estimates');
+        return val ? JSON.parse(val) : [];
+    });
+
     // Persist parameters to localStorage
     useEffect(() => {
         localStorage.setItem('shambaiq_profit_crop', selectedCrop);
@@ -78,6 +83,43 @@ function ProfitCalculator() {
     const costPerBag = totalYield > 0 ? (totalCosts / totalYield).toFixed(0) : 0;
 
     const formatCurrency = (value) => new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES', minimumFractionDigits: 0 }).format(value);
+
+    // Save active scenario to records list
+    const handleSaveEstimate = () => {
+        const newEstimate = {
+            id: 'est-' + Date.now(),
+            date: new Date().toLocaleDateString('en-KE', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            crop: selectedCropData.crop,
+            cropId: selectedCrop,
+            area: nArea,
+            yieldPerHa: nYield,
+            totalYield: totalYield,
+            revenue: grossRevenue,
+            costs: totalCosts,
+            netProfit: netProfit,
+            roi: roi,
+            rawCosts: { ...costs }
+        };
+
+        const updated = [newEstimate, ...savedEstimates];
+        setSavedEstimates(updated);
+        localStorage.setItem('shambaiq_saved_estimates', JSON.stringify(updated));
+    };
+
+    // Delete a saved scenario
+    const handleDeleteEstimate = (id) => {
+        const updated = savedEstimates.filter(e => e.id !== id);
+        setSavedEstimates(updated);
+        localStorage.setItem('shambaiq_saved_estimates', JSON.stringify(updated));
+    };
+
+    // Load saved scenario back to inputs
+    const handleLoadEstimate = (est) => {
+        setSelectedCrop(est.cropId);
+        setArea(est.area.toString());
+        setYieldEstimate(est.yieldPerHa.toString());
+        setCosts(est.rawCosts);
+    };
 
     return (
         <div className="profit-calc">
@@ -250,10 +292,88 @@ function ProfitCalculator() {
                         </p>
                     </div>
 
+                    {/* Save Estimate Button */}
+                    <button 
+                        type="button" 
+                        className="scan-btn scan-btn--primary"
+                        onClick={handleSaveEstimate}
+                        style={{ width: '100%', marginTop: '1rem', padding: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', background: '#3b82f6', color: '#fff', fontWeight: '800', border: 'none', borderRadius: '8px' }}
+                    >
+                        💾 Save Estimate to Records
+                    </button>
+
                     <p className="profit-calc__disclaimer">
                         ⓘ This is an estimate based on current NCPB & local market averages. Actual results may vary based on weather conditions, market fluctuations, and final yield.
                     </p>
                 </div>
+            </div>
+
+            {/* Saved Estimates Records */}
+            <div className="profit-calc__records-section" style={{ marginTop: '2.5rem', background: 'rgba(30, 41, 59, 0.4)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(4px)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div style={{ textAlign: 'left' }}>
+                        <h4 style={{ margin: 0, fontSize: '1.1rem', color: '#f1f5f9' }}>💾 Saved Financial Projections</h4>
+                        <p style={{ margin: '0.2rem 0 0', color: '#64748b', fontSize: '0.8rem' }}>History of scenario calculations saved in local database.</p>
+                    </div>
+                </div>
+
+                {savedEstimates.length === 0 ? (
+                    <div style={{ padding: '2.5rem', textAlign: 'center', color: '#64748b', fontSize: '0.85rem', background: 'rgba(255,255,255,0.01)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.08)' }}>
+                        No saved scenarios yet. Click "Save Estimate to Records" in the financial summary panel above to log your first calculation.
+                    </div>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {savedEstimates.map(est => (
+                            <div key={est.id} className="glass-panel" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.04)', flexWrap: 'wrap', gap: '1.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                    <div style={{ fontSize: '2rem' }}>
+                                        {est.crop.includes('Maize') ? '🌽' : est.crop.includes('Wheat') ? '🌾' : est.crop.includes('Beans') ? '🫘' : '🥔'}
+                                    </div>
+                                    <div style={{ textAlign: 'left' }}>
+                                        <strong style={{ color: '#fff', fontSize: '0.9rem' }}>{est.crop} Projection</strong>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.15rem' }}>
+                                            📅 {est.date} | 📏 {est.area} Ha | 📦 {est.totalYield} Bags
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                                    <div style={{ textAlign: 'left' }}>
+                                        <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase' }}>Revenue / Costs</span>
+                                        <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#cbd5e1' }}>
+                                            {formatCurrency(est.revenue)} / {formatCurrency(est.costs)}
+                                        </div>
+                                    </div>
+                                    <div style={{ textAlign: 'left' }}>
+                                        <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase' }}>Net Profit</span>
+                                        <div style={{ fontSize: '0.95rem', fontWeight: '900', color: est.netProfit >= 0 ? '#10b981' : '#ef4444' }}>
+                                            {formatCurrency(est.netProfit)}
+                                            <span style={{ fontSize: '0.7rem', marginLeft: '0.4rem', fontWeight: 'bold' }}>({est.roi}%)</span>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '0.4rem' }}>
+                                        <button 
+                                            type="button" 
+                                            className="scan-btn scan-btn--secondary"
+                                            onClick={() => handleLoadEstimate(est)}
+                                            style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', width: 'auto' }}
+                                        >
+                                            📂 Load
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            className="scan-btn scan-btn--danger"
+                                            onClick={() => handleDeleteEstimate(est.id)}
+                                            style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', width: 'auto', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#ef4444' }}
+                                        >
+                                            🗑️ Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
