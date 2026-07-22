@@ -2,11 +2,10 @@ import React from 'react';
 
 const MarketTrendRunner = () => {
   const trends = [
-    { crop: 'Maize (White)', price: '3,450', change: '+5.2%', up: true },
-    { crop: 'Sorghum', price: '2,100', change: '-1.4%', up: false },
-    { crop: 'Cowpeas', price: '4,800', change: '+8.1%', up: true },
-    { crop: 'Millet', price: '3,900', change: '0.0%', up: null },
-    { crop: 'Dry Beans', price: '9,200', change: '+2.4%', up: true },
+    { crop: 'Maize (White)', price: 'KES 4,100', change: '+4.0%', up: true },
+    { crop: 'Wheat (Premium)', price: 'KES 5,400', change: '+2.0%', up: true },
+    { crop: 'Beans (Rosecoco)', price: 'KES 11,500', change: '+3.0%', up: true },
+    { crop: 'Irish Potatoes', price: 'KES 3,200', change: '+5.0%', up: true },
   ];
 
   return (
