@@ -58,6 +58,16 @@ function FarmMapViewer({ fieldMap, zones = [], onAddZone }) {
   const [zoneName, setZoneName] = useState('')
   const [zoneCrop, setZoneCrop] = useState('Maize')
   const [zoneStatus, setZoneStatus] = useState('Stable')
+  const [typedAcreage, setTypedAcreage] = useState('')
+
+  useEffect(() => {
+    if (editorPoints.length >= 3) {
+      const areaM2 = computeSphericalArea(editorPoints)
+      setTypedAcreage((areaM2 * 0.000247105).toFixed(1))
+    } else {
+      setTypedAcreage('')
+    }
+  }, [editorPoints])
 
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
@@ -304,6 +314,7 @@ function FarmMapViewer({ fieldMap, zones = [], onAddZone }) {
 
     const areaM2 = computeSphericalArea(editorPoints)
     const computedAcreage = (areaM2 * 0.000247105).toFixed(1)
+    const finalAcreage = typedAcreage ? Number(typedAcreage).toFixed(1) : computedAcreage
     
     const newZone = {
       id: 'custom-' + Date.now(),
@@ -313,13 +324,14 @@ function FarmMapViewer({ fieldMap, zones = [], onAddZone }) {
       tone: zoneStatus === 'Stable' ? 'good' : (zoneStatus === 'Monitor' ? 'watch' : 'risk'),
       performanceShare: Math.floor(Math.random() * 30) + 15,
       coords: editorPoints,
-      acreage: computedAcreage
+      acreage: finalAcreage
     }
 
     onAddZone(newZone)
     setIsEditing(false)
     handleResetPoints()
     setZoneName('')
+    setTypedAcreage('')
   }
 
   const activeAreaM2 = computeSphericalArea(editorPoints)
@@ -426,6 +438,19 @@ function FarmMapViewer({ fieldMap, zones = [], onAddZone }) {
                     )
                   })}
                 </select>
+              </div>
+
+              <div className="form-group">
+                <label>Block Size (Acres)</label>
+                <input 
+                  type="number" 
+                  value={typedAcreage} 
+                  onChange={(e) => setTypedAcreage(e.target.value)} 
+                  placeholder="e.g. 2.5"
+                  step="any"
+                  disabled={editorPoints.length < 3}
+                  required
+                />
               </div>
 
               <div className="form-group">

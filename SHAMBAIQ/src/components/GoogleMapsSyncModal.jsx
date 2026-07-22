@@ -64,6 +64,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
   const [resolvedPlaceName, setResolvedPlaceName] = useState(null)
   const [searchResults, setSearchResults] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [typedFarmSize, setTypedFarmSize] = useState('')
   
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
@@ -112,6 +113,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
           // 1 square meter = 0.000247105 acres
           const acreage = (areaM2 * 0.000247105).toFixed(2)
           setComputedSize(`${acreage} acres`)
+          setTypedFarmSize(acreage)
 
           // Compute average centroid GPS coord
           let sumLat = 0, sumLng = 0
@@ -153,6 +155,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
           setComputedSize(null)
           setGpsCoords(null)
           setResolvedPlaceName(null)
+          setTypedFarmSize('')
         }
       }
 
@@ -231,6 +234,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
     setResolvedPlaceName(null)
     setSearchResults([])
     setShowSuggestions(false)
+    setTypedFarmSize('')
   }
 
   // Location Geocode Search (OSM Nominatim API)
@@ -295,7 +299,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
 
     const syncedFarm = {
       parcelName: farmName,
-      farmSize: computedSize,
+      farmSize: typedFarmSize ? `${Number(typedFarmSize).toFixed(2)} acres` : computedSize,
       soilType: soilType,
       cropMix: selectedCrops.map(c => c.split(' (')[0]).join(', ') || 'Maize, Sorghum',
       center: resolvedPlaceName ? `${resolvedPlaceName} (${gpsCoords})` : gpsCoords,
@@ -420,6 +424,19 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                   value={farmName}
                   onChange={(e) => setFarmName(e.target.value)}
                   placeholder="e.g. Soy Ridge Plot" 
+                  disabled={pointsCount < 3}
+                  required
+                />
+              </div>
+
+              <div className="maps-form-group">
+                <label>Farm Size (Acres)</label>
+                <input 
+                  type="number" 
+                  value={typedFarmSize}
+                  onChange={(e) => setTypedFarmSize(e.target.value)}
+                  placeholder="e.g. 5.0"
+                  step="any"
                   disabled={pointsCount < 3}
                   required
                 />
