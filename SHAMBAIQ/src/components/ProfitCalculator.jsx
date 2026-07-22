@@ -1,23 +1,53 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 const mockMarketPrices = [
-    { id: 'sorghum', crop: 'Sorghum', price: 4200, icon: '🌾' },
-    { id: 'cowpeas', crop: 'Cowpeas', price: 8500, icon: '🌱' },
-    { id: 'maize', crop: 'Maize', price: 3800, icon: '🌽' },
-    { id: 'millet', crop: 'Millet', price: 5100, icon: '🌿' },
-    { id: 'greenGrams', crop: 'Green Grams', price: 12000, icon: '🟢' },
+    { id: 'maize', crop: 'Maize', price: 4100, icon: '🌽' },
+    { id: 'wheat', crop: 'Wheat', price: 5400, icon: '🌾' },
+    { id: 'beans', crop: 'Beans (Rosecoco)', price: 11500, icon: '🫘' },
+    { id: 'potatoes', crop: 'Irish Potatoes', price: 3200, icon: '🥔' },
 ];
 
 function ProfitCalculator() {
-    const [selectedCrop, setSelectedCrop] = useState('sorghum');
-    const [area, setArea] = useState(5);
-    const [yieldEstimate, setYieldEstimate] = useState(15);
-    const [costs, setCosts] = useState({
-        seed: 5000,
-        fertilizer: 12000,
-        labor: 25000,
-        other: 8000,
+    const [selectedCrop, setSelectedCrop] = useState(() => {
+        return localStorage.getItem('shambaiq_profit_crop') || 'maize';
     });
+    
+    const [area, setArea] = useState(() => {
+        const val = localStorage.getItem('shambaiq_profit_area');
+        return val !== null ? Number(val) : 5;
+    });
+    
+    const [yieldEstimate, setYieldEstimate] = useState(() => {
+        const val = localStorage.getItem('shambaiq_profit_yield');
+        return val !== null ? Number(val) : 15;
+    });
+    
+    const [costs, setCosts] = useState(() => {
+        const val = localStorage.getItem('shambaiq_profit_costs');
+        return val ? JSON.parse(val) : {
+            seed: 5000,
+            fertilizer: 12000,
+            labor: 25000,
+            other: 8000,
+        };
+    });
+
+    // Persist parameters to localStorage
+    useEffect(() => {
+        localStorage.setItem('shambaiq_profit_crop', selectedCrop);
+    }, [selectedCrop]);
+
+    useEffect(() => {
+        localStorage.setItem('shambaiq_profit_area', area.toString());
+    }, [area]);
+
+    useEffect(() => {
+        localStorage.setItem('shambaiq_profit_yield', yieldEstimate.toString());
+    }, [yieldEstimate]);
+
+    useEffect(() => {
+        localStorage.setItem('shambaiq_profit_costs', JSON.stringify(costs));
+    }, [costs]);
 
     const handleCostChange = (e) => {
         const { name, value } = e.target;
