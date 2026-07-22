@@ -8604,7 +8604,7 @@
     border-top: 1px solid rgba(255,255,255,0.08);
   }
   .maps-canvas-frame {
-    height: 280px !important;
+    height: 440px !important;
   }
 }
 
@@ -8653,6 +8653,7 @@
   overflow: hidden;
   background: #162518;
   cursor: crosshair;
+  height: 520px;
 }
 
 .maps-satellite-svg {

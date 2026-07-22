@@ -75,13 +75,13 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
     const initLeafletMap = () => {
       if (!mapContainerRef.current) return
 
-      // Initialize map centered on Uasin Gishu County (Eldoret), Kenya
+      // Initialize map centered on Uasin Gishu County (Moiben), Kenya
       const map = L.map(mapContainerRef.current, {
         zoomControl: true,
         attributionControl: true,
         maxZoom: 22,
         minZoom: 1
-      }).setView([0.5143, 35.2698], 15)
+      }).setView([0.7936, 35.3475], 14)
       mapRef.current = map
 
       // Load Google Hybrid Satellite tiles (Satellite imagery + Labels/Roads)
@@ -328,7 +328,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
               </button>
             </form>
 
-            <div className="maps-canvas-frame" style={{ height: '400px', cursor: 'pointer' }}>
+            <div className="maps-canvas-frame" style={{ cursor: 'pointer' }}>
               <div 
                 ref={mapContainerRef} 
                 style={{ width: '100%', height: '100%', background: '#111a13' }}
