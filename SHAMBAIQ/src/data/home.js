@@ -13,8 +13,8 @@ export const homeBrand = {
 
 export const farmerProfile = {
   name: 'John',
-  location: 'Kitui County',
-  farmName: 'Kaveta Farm',
+  location: 'Uasin Gishu County',
+  farmName: 'Eldoret Farm',
   greetingNote: 'Your fields look calm this morning. Start with the weather, then review soil and market movement before heading out.',
   seasonLabel: 'Dryland season watch',
   todayFocus: 'Check sorghum blocks early before afternoon heat picks up.',
@@ -73,8 +73,8 @@ export const homeQuickActions = [
 ]
 
 export const myFarmOverview = {
-  location: 'Kitui County',
-  parcelName: 'Kaveta Main Plot',
+  location: 'Uasin Gishu County',
+  parcelName: 'Eldoret Main Plot',
   farmSize: '4.2 acres',
   soilType: 'Sandy loam',
   cropMix: 'Sorghum, cowpeas, pigeon peas',
@@ -107,11 +107,11 @@ export const homeInsightCards = [
 
 export const homeFieldMap = {
   title: 'Farm Map / Field Overview',
-  subtitle: 'GIS-style parcel map with local field overlays for Kaveta Main Plot.',
+  subtitle: 'GIS-style parcel map with local field overlays for Eldoret Main Plot.',
   badge: 'GIS-ready view',
   recommendation: 'South block is drying faster than the rest of the field. Prioritize scouting and mulch retention there first.',
   gis: {
-    center: '1.3642 S, 38.0109 E',
+    center: '0.5143 N, 35.2698 E',
     scale: '1:2,500',
     source: 'Local field records',
     updated: 'Updated 4:00 PM',

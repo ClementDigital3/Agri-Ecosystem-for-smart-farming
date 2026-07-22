@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 const reports = [
-  { time: '1m ago', text: 'Aphid spike detected in Mutomo block.', threat: 'high' },
+  { time: '1m ago', text: 'Aphid spike detected in Soy block.', threat: 'high' },
   { time: '4m ago', text: 'Soil moisture dip threshold reached for Sorghum.', threat: 'medium' },
-  { time: '12m ago', text: 'County extension officer dispatched to Kitui South.', threat: 'info' },
+  { time: '12m ago', text: 'County extension officer dispatched to Eldoret Central.', threat: 'info' },
   { time: '18m ago', text: 'Low-wind spray window opens in exactly 4 hours.', threat: 'low' },
   { time: '21m ago', text: 'Market spot price for Cowpeas jumped +6%.', threat: 'success' },
 ]

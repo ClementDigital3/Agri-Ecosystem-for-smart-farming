@@ -119,7 +119,7 @@ function HomeFieldMapCard({ title, subtitle, recommendation, zones, badge, gis }
           <div className="home-map-card__map-toolbar">
             <div className="home-map-card__map-chip">
               <span>GIS center</span>
-              <strong>{gis?.center ?? '1.3642 S, 38.0109 E'}</strong>
+              <strong>{gis?.center ?? '0.5143 N, 35.2698 E'}</strong>
             </div>
 
             <div className="home-map-card__north-indicator" aria-label="North orientation">
@@ -128,7 +128,7 @@ function HomeFieldMapCard({ title, subtitle, recommendation, zones, badge, gis }
           </div>
 
           <div className="home-map-card__map-frame">
-            <svg className="home-map-card__gis-map" viewBox="0 0 640 420" role="img" aria-label="GIS-style parcel map of Kaveta Main Plot">
+            <svg className="home-map-card__gis-map" viewBox="0 0 640 420" role="img" aria-label="GIS-style parcel map of Eldoret Main Plot">
               <rect x="0" y="0" width="640" height="420" className="home-map-card__gis-base" />
 
               <path className="home-map-card__gis-contour" d="M26 86 C122 28 242 26 362 92 C468 150 556 150 618 116" />

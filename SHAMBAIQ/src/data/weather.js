@@ -1,5 +1,5 @@
 export const weatherCurrent = {
-  location: 'Kitui County',
+  location: 'Uasin Gishu County',
   updated: 'Updated 4:00 PM',
   condition: 'Sunny',
   summary: 'Hot afternoon with dry air and light winds across most farms.',

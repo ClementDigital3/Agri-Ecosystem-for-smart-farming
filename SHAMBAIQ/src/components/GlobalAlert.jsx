@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 function GlobalAlert({
   title = "URGENT: Flash Weather Alert",
-  message = "Severe localized downpour projected for Kitui/Machakos corridor at 16:00. Halt chemical spraying immediately to rapidly reduce runoff risk.",
+  message = "Severe localized downpour projected for Eldoret/Uasin Gishu corridor at 16:00. Halt chemical spraying immediately to rapidly reduce runoff risk.",
   delayMs = 5000,
   icon = "🚨"
 }) {

@@ -74,13 +74,13 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
     const initLeafletMap = () => {
       if (!mapContainerRef.current) return
 
-      // Initialize map centered on Kitui County, Kenya
+      // Initialize map centered on Uasin Gishu County (Eldoret), Kenya
       const map = L.map(mapContainerRef.current, {
         zoomControl: true,
         attributionControl: true,
         maxZoom: 22,
         minZoom: 1
-      }).setView([-1.3642, 38.0109], 15)
+      }).setView([0.5143, 35.2698], 15)
       mapRef.current = map
 
       // Load Google Hybrid Satellite tiles (Satellite imagery + Labels/Roads)
@@ -330,7 +330,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                   type="text" 
                   value={farmName}
                   onChange={(e) => setFarmName(e.target.value)}
-                  placeholder="e.g. Kaveta Ridge Plot" 
+                  placeholder="e.g. Soy Ridge Plot" 
                   disabled={pointsCount < 3}
                   required
                 />

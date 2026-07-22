@@ -19,7 +19,7 @@ function PropagationMap() {
           {/* Outbreak Epicenter */}
           <g transform="translate(120, 80)">
             <circle r="3" fill="#e74c3c" />
-            <text x="10" y="3" fontSize="10" fill="#e74c3c" fontWeight="bold" letterSpacing="1">KITUI SOUTH (EPICENTER)</text>
+            <text x="10" y="3" fontSize="10" fill="#e74c3c" fontWeight="bold" letterSpacing="1">ELDORET SOY (EPICENTER)</text>
             
             {/* Expanding Propagation Rings (Radio waves) */}
             <circle r="10" className="prop-ring" style={{animationDelay: '0s'}} />

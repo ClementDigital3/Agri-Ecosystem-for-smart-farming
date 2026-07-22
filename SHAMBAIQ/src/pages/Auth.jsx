@@ -95,7 +95,7 @@ function Auth({ onSignInSuccess }) {
   const [signUpPhone, setSignUpPhone] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpFarmName, setSignUpFarmName] = useState('')
-  const [signUpLocation, setSignUpLocation] = useState('15. Kitui County')
+  const [signUpLocation, setSignUpLocation] = useState('27. Uasin Gishu County')
   const [signUpPassword, setSignUpPassword] = useState('')
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState('')
   const [selectedCrops, setSelectedCrops] = useState([])
@@ -123,8 +123,8 @@ function Auth({ onSignInSuccess }) {
     if (signInPhone === '0700000000' && signInPassword === 'password') {
       const defaultUser = {
         name: 'John',
-        location: '15. Kitui County',
-        farmName: 'Kaveta Farm',
+        location: '27. Uasin Gishu County',
+        farmName: 'Eldoret Farm',
         phone: '0700000000',
         email: 'john@shambaiq.com'
       }
@@ -470,7 +470,7 @@ function Auth({ onSignInSuccess }) {
                 <input 
                   type="text" 
                   id="signup-farm" 
-                  placeholder="e.g. Kaveta Farm"
+                  placeholder="e.g. Eldoret Farm"
                   value={signUpFarmName}
                   onChange={(e) => setSignUpFarmName(e.target.value)}
                   required
