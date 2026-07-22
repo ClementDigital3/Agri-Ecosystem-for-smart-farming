@@ -424,7 +424,6 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                   value={farmName}
                   onChange={(e) => setFarmName(e.target.value)}
                   placeholder="e.g. Soy Ridge Plot" 
-                  disabled={pointsCount < 3}
                   required
                 />
               </div>
@@ -437,7 +436,6 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                   onChange={(e) => setTypedFarmSize(e.target.value)}
                   placeholder="e.g. 5.0"
                   step="any"
-                  disabled={pointsCount < 3}
                   required
                 />
               </div>
@@ -447,7 +445,6 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                 <select 
                   value={soilType}
                   onChange={(e) => setSoilType(e.target.value)}
-                  disabled={pointsCount < 3}
                 >
                   <option value="Sandy loam">Sandy Loam</option>
                   <option value="Red clay">Red Clay</option>
@@ -460,7 +457,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                 <label>Primary Crop Mix</label>
                 <div 
                   style={{ 
-                    cursor: pointsCount < 3 ? 'not-allowed' : 'pointer', 
+                    cursor: 'pointer', 
                     display: 'flex', 
                     alignItems: 'center',
                     background: '#1e293b', 
@@ -469,12 +466,10 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                     padding: '0.65rem 0.5rem', 
                     borderRadius: '8px', 
                     fontSize: '0.85rem',
-                    opacity: pointsCount < 3 ? 0.5 : 1
+                    opacity: 1
                   }} 
                   onClick={() => {
-                    if (pointsCount >= 3) {
-                      setIsOpenCrops(!isOpenCrops)
-                    }
+                    setIsOpenCrops(!isOpenCrops)
                   }}
                 >
                   <div style={{
@@ -491,7 +486,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                   <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{isOpenCrops ? '▲' : '▼'}</span>
                 </div>
                 
-                {isOpenCrops && pointsCount >= 3 && (
+                {isOpenCrops && (
                   <>
                     <div 
                       style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 999 }} 
@@ -587,7 +582,7 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
                   type="submit" 
                   className="confirm-sync-btn"
                   style={{ flex: 0.6, margin: 0 }}
-                  disabled={pointsCount < 3 || !farmName.trim()}
+                  disabled={!farmName.trim()}
                 >
                   🛰️ Sync ShambaIQ
                 </button>

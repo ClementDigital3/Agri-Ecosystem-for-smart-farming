@@ -448,7 +448,6 @@ function FarmMapViewer({ fieldMap, zones = [], onAddZone }) {
                   onChange={(e) => setTypedAcreage(e.target.value)} 
                   placeholder="e.g. 2.5"
                   step="any"
-                  disabled={editorPoints.length < 3}
                   required
                 />
               </div>
@@ -480,7 +479,7 @@ function FarmMapViewer({ fieldMap, zones = [], onAddZone }) {
                 <button type="button" className="editor-btn editor-btn--cancel" onClick={handleCancelEditor}>
                   Cancel
                 </button>
-                <button type="submit" className="editor-btn editor-btn--save" disabled={editorPoints.length < 3 || !zoneName.trim()}>
+                <button type="submit" className="editor-btn editor-btn--save" disabled={!zoneName.trim()}>
                   💾 Save Area
                 </button>
               </div>
