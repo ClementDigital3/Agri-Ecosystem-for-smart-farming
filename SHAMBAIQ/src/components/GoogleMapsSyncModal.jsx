@@ -62,6 +62,8 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
   const [gpsCoords, setGpsCoords] = useState(null)
   const [pointsCount, setPointsCount] = useState(0)
   const [resolvedPlaceName, setResolvedPlaceName] = useState(null)
+  const [searchResults, setSearchResults] = useState([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
   
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
@@ -227,6 +229,8 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
     setGpsCoords(null)
     setSelectedCrops([])
     setResolvedPlaceName(null)
+    setSearchResults([])
+    setShowSuggestions(false)
   }
 
   // Location Geocode Search (OSM Nominatim API)
@@ -235,17 +239,23 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
     if (!searchQuery.trim() || !mapRef.current) return
 
     setIsSearching(true)
+    setSearchResults([])
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1`)
+      // Query OpenStreetMap Nominatim restricted to Kenya for local name priority
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5&countrycodes=ke`)
       if (response.ok) {
         const data = await response.json()
         if (data && data.length > 0) {
+          setSearchResults(data)
+          setShowSuggestions(true)
+          
+          // Focus view on the highest-probability first match
           const place = data[0]
           const lat = parseFloat(place.lat)
           const lng = parseFloat(place.lon)
-          mapRef.current.setView([lat, lng], 17)
+          mapRef.current.setView([lat, lng], 16)
         } else {
-          alert("Location not found. Try searching for a broader term like 'Kitui, Kenya' or 'Machakos'.")
+          alert("Location not found. Try searching for a broader term like 'Moiben' or 'Eldoret'.")
         }
       }
     } catch (err) {
@@ -314,19 +324,68 @@ function GoogleMapsSyncModal({ isOpen, onClose, onSyncComplete }) {
         <div className="maps-modal-body">
           
           {/* Satellite Map */}
-          <div className="maps-viewport-section">
+          <div className="maps-viewport-section" style={{ position: 'relative' }}>
             <form onSubmit={handleSearchSubmit} className="maps-search-bar">
               <input 
                 type="text" 
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search town, road, village, or coords (e.g. Kitui County, Kenya)..." 
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  if (!e.target.value.trim()) {
+                    setSearchResults([])
+                    setShowSuggestions(false)
+                  }
+                }}
+                placeholder="Search town, sub-county, local village (e.g. Moiben, Soy)..." 
                 disabled={isSearching}
               />
               <button type="submit" disabled={isSearching}>
                 {isSearching ? 'Searching...' : 'Search Location 🔎'}
               </button>
             </form>
+
+            {searchResults.length > 0 && showSuggestions && (
+              <div className="search-suggestions-dropdown" style={{
+                background: '#1e293b',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '8px',
+                marginTop: '-8px',
+                marginBottom: '10px',
+                maxHeight: '160px',
+                overflowY: 'auto',
+                position: 'absolute',
+                zIndex: 2000,
+                width: 'calc(100% - 2rem)',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+                padding: '0.25rem'
+              }}>
+                {searchResults.map((place) => (
+                  <div 
+                    key={place.place_id} 
+                    style={{
+                      padding: '0.5rem 0.75rem',
+                      cursor: 'pointer',
+                      fontSize: '0.8rem',
+                      color: '#f1f5f9',
+                      borderBottom: '1px solid rgba(255,255,255,0.05)',
+                      textAlign: 'left',
+                      transition: 'background 0.2s'
+                    }}
+                    onClick={() => {
+                      const lat = parseFloat(place.lat)
+                      const lng = parseFloat(place.lon)
+                      mapRef.current.setView([lat, lng], 17)
+                      setSearchQuery(place.display_name.split(',')[0])
+                      setShowSuggestions(false)
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = 'rgba(52, 211, 153, 0.15)'}
+                    onMouseLeave={(e) => e.target.style.background = 'transparent'}
+                  >
+                    📍 {place.display_name}
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="maps-canvas-frame" style={{ cursor: 'pointer' }}>
               <div 
